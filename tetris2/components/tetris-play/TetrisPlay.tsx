@@ -47,7 +47,7 @@ function TetrisPlay() {
 
   // отслеживаем навигацию пользователя - через handleKeyPress на window
   const handleKeyPress = useCallback(
-    throttle((event: any) => {
+    throttle((event: KeyboardEvent) => {
       dispatch(checkCollided(event.code));
       dispatch(move(event.code));
       dispatch(updateDetailPostion());
