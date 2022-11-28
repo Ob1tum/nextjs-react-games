@@ -7,6 +7,7 @@ interface CellProps {
   cell: Cell;
   selected: boolean;
   click: (cell: Cell) => void;
+
 }
 
 const CellComponent: FC<CellProps> = ({ cell, selected, click }) => {
