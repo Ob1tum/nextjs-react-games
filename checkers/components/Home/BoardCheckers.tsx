@@ -547,7 +547,7 @@ const BoardCheckers: FC<BoardProps> = ({
   };
   const getPlayerColorByCondition = () =>
     // const isWhite = currentPlayer?.color === 'white';
-    currentPlayer.name
+    currentPlayer.name;
   // isPlayWithBoot === true
   //     ? currentPlayer?.color === 'white'
   //         ? 'Белого игрока'
