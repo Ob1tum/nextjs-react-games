@@ -10,7 +10,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "pre-commit": "lint-staged",
-    "test": "jest --watchAll"
+    "test": "jest"
   },
   "dependencies": {
     "@jest/globals": "^29.3.1",
