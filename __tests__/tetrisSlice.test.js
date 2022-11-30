@@ -1,6 +1,6 @@
 import { expect, test, describe } from '@jest/globals';
 
-import tetrisSlice, { changeDropTime } from './tetrisSlice';
+import tetrisSlice, { changeDropTime } from '../tetris2/store/tetrisSlice';
 
 describe('Проверка changeDropTime в tetrisSlice (@redux/toolkit)', () => {
   test('Тест - 1', () => {

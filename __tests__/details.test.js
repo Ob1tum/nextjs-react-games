@@ -1,6 +1,6 @@
 import { expect, test, describe } from '@jest/globals';
 
-import { randomDetail } from './details';
+import { randomDetail } from '../tetris2/components/details/details';
 
 describe('Рандомная деталь', () => {
   test('Тест детали - 1 (определенность)', () => {

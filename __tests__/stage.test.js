@@ -1,6 +1,6 @@
 import { expect, test, describe } from '@jest/globals';
 
-import { createStage } from './stage';
+import { createStage } from '../tetris2/components/stage/stage';
 
 describe('Проверка ф-ции создания игрового поля', () => {
   test('Тест - 1', () => {
