@@ -44,8 +44,6 @@ const Chess = () => {
 
   const rival = useAppSelector((state) => state.rootSlice.rival);
   const player = useAppSelector((state) => state.rootSlice.currentPlayer);
-  console.log(player);
-  console.log(player?.mode);
 
   // const [gameStartSettings, setGameStartSettings] = useState<GameSettings>(settingsGame.current);
 
@@ -183,7 +181,9 @@ const Chess = () => {
             <div className={styles['chess__info-wrapper']}>
               <PlayerData
                 currentPlayer={currentPlayer}
-                playerName={rival?.name || 'name'}
+                /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+                // @ts-ignore
+                playerName={rival?.label.name || 'name'}
                 playerColor={Colors.BLACK}
               />
               <CurrentPlayerText>

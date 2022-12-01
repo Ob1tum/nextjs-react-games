@@ -71,7 +71,11 @@ const GameSettings: FC<GameSettingsProps> = ({ setGainTime, settingsGame }) => {
   return (
     <Settings
       className={styles.wrapper}
-      trigger={<StyledPopupButton>Создать игру</StyledPopupButton>}
+      trigger={
+        <StyledPopupButton>
+          <span className={styles.title}>Создать игру</span>
+        </StyledPopupButton>
+      }
       modal
       closeOnDocumentClick
     >

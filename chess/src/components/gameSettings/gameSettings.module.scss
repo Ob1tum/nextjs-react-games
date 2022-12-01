@@ -1,4 +1,3 @@
-
 .settings {
 
   &__logo{
@@ -77,6 +76,10 @@
 
 .colors,.gain,.time,.mode,.bid {
   font-family: "Audiowide", cursive;
-  color: #646464;
+}
 
+.title{
+  color: black;
+  font-family: "Audiowide", cursive;
+  font-weight: bold;
 }
