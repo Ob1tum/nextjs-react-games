@@ -15,7 +15,6 @@
     }
   },
   "testEnvironment": "jsdom",
-  "collectCoverage": true,
   "coverageProvider": "v8",
   "collectCoverageFrom": [
     "**/*.{js,jsx,ts,tsx}",
@@ -28,10 +27,12 @@
   ],
   "testPathIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/.next/"],
   "transform": {
-    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { "presets": ["next/babel"] }]
+    "^.+\\.(js|jsx|ts|tsx|cjs)$": ["babel-jest", { "presets": ["next/babel"] }],
+    "\\.js$": "<rootDir>/node_modules/babel-jest"
   },
   "transformIgnorePatterns": [
     "/node_modules/",
+    "node_modules/(?!axios)",
     "^.+\\.module\\.(css|sass|scss)$"
   ],
   "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
