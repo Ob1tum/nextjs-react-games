@@ -1,7 +1,7 @@
-import React from 'react';
+import { FC } from 'react';
 
-import { Main } from '../src/components/main/main';
+import Main from '../components/main/main';
 
-const Home = () => <Main />;
+const Home: FC = () => <Main />;
 
 export default Home;

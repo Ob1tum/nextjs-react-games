@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -7,6 +8,8 @@ import { Colors } from '../../model/Colors';
 import { Player } from '../../model/Player';
 import { Figure } from '../../model/figures/Figure';
 import Modal from '../Modal/Modal';
+import { RootState } from '../../../store';
+import { players } from '../Lobbi/PlayersForOnlinePlay';
 
 import CellComponent from './CellComponent';
 
@@ -39,6 +42,8 @@ const BoardCheckers: FC<BoardProps> = ({
   const [prevWhite, setPrevWhite] = useState(board.lostWhiteFigure?.length);
   let directionEmpty = selectedCell?.figure?.color === Colors.BLACK ? -1 : 1;
   let directionEmptyTwo = selectedCell?.figure?.color === Colors.BLACK ? 1 : -1;
+
+  const { isPlayWithBoot, idForPlayersOnline } = useSelector((state: RootState) => state.checkers);
 
   const click = (cell: Cell) => {
     let banOnHitting = true;
@@ -486,6 +491,7 @@ const BoardCheckers: FC<BoardProps> = ({
     const newBoard = board.getCopyBoard();
     setBoard(newBoard);
   }
+
   function highlightCells() {
     board.highlightCells(selectedCell);
     updateBoard();
@@ -509,6 +515,10 @@ const BoardCheckers: FC<BoardProps> = ({
     }
     return div;
   }
+  const selectedUser = players.filter((el) => el.id === idForPlayersOnline);
+  const colorSelectedUser = selectedUser.map((el) => el.playConditional.colorCheckers).join();
+  console.log(colorSelectedUser);
+
   return (
     <div className="page__checkers">
       {board.lostWhiteFigure?.length === 12 || board.lostBlackFigure?.length === 12 ? (
@@ -521,7 +531,7 @@ const BoardCheckers: FC<BoardProps> = ({
             ) : (
               <span>Белого</span>
             )}{' '}
-            игрока с победой!!! игрока с победой!!!
+            игрока с победой!!!
           </h2>
           <div className="wrap">{displayForm()}</div>
           <div className="checkers__win-buttons">
@@ -529,7 +539,7 @@ const BoardCheckers: FC<BoardProps> = ({
               Продолжить игру
             </button>
             <button type="button" className="win-button__right">
-              <Link href="/">Выйти на главную</Link>
+              <Link href="../../../checkers">Выйти на главную</Link>
             </button>
           </div>
         </div>
@@ -581,9 +591,15 @@ const BoardCheckers: FC<BoardProps> = ({
                       : { color: 'black', fontSize: '30px' }
                   }
                 >
-                  {currentPlayer?.color === 'white' ? 'Белого' : 'Черного'}
+                  {isPlayWithBoot === true
+                    ? currentPlayer?.color === 'white'
+                      ? 'Белого игрока'
+                      : 'Черного игрока'
+                    : currentPlayer?.color === 'white'
+                    ? selectedUser.map((el) => el.name) || 'Белого'
+                    : 'Черного'}
                 </span>{' '}
-                игрока{' '}
+                {/* игрока{' '} */}
               </h3>
             )}
             <div className="checkers__letters-up">
@@ -663,6 +679,11 @@ const BoardCheckers: FC<BoardProps> = ({
                   и последующие шашки которые распологаются на одной клетке за ней, и если есть
                   свободное пространство после взятой шашки.
                 </p>
+                <div className="modal-footer">
+                  <button className="modal-button" type="button" onClick={() => setShow(false)}>
+                    Закрыть
+                  </button>
+                </div>
               </Modal>
             </div>
             <div className="board">
