@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import React from 'react';
 import Link from 'next/link';
 import { router } from 'next/client';
+
 import { useCookies } from 'react-cookie';
 
 import facebook from '../img/facebook.svg';
