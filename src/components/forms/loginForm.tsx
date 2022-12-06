@@ -46,7 +46,6 @@ const LoginForm = () => {
     } else {
     }
   };
-
   return (
     <Section>
       <Form onSubmit={handleSubmit(onSubmit)}>
