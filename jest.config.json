@@ -28,7 +28,8 @@
   "testPathIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/.next/"],
   "transform": {
     "^.+\\.(js|jsx|ts|tsx|cjs)$": ["babel-jest", { "presets": ["next/babel"] }],
-    "\\.js$": "<rootDir>/node_modules/babel-jest"
+    "\\.js$": "<rootDir>/node_modules/babel-jest",
+     "^.+\\.svg$": "jest-transform-stub"
   },
   "transformIgnorePatterns": [
     "/node_modules/",
