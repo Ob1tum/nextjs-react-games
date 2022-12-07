@@ -1,3 +1,5 @@
+import { StaticImageData } from 'next/image';
+
 import { Cell } from './Cell';
 import { Colors } from './Colors';
 import { Queen } from './figures/Queen';
@@ -16,7 +18,7 @@ interface TransformData {
 interface HistoryMoveData {
   figureData: Figure | null;
   moveData: string;
-  eatFigureData: string | null;
+  eatFigureData: undefined | null | StaticImageData;
   check: boolean;
 }
 export class Board {
@@ -52,9 +54,9 @@ export class Board {
       const row: Cell[] = [];
       for (let j = 0; j < 8; j += 1) {
         if ((i + j) % 2 !== 0) {
-          row.push(new Cell(this, j, i, Colors.BLACK, null));
-        } else {
           row.push(new Cell(this, j, i, Colors.WHITE, null));
+        } else {
+          row.push(new Cell(this, j, i, Colors.BLACK, null));
         }
       }
       this.cells.push(row);

@@ -60,10 +60,10 @@ export const Settings = styled(Popup)`
   &-content {
     background-color: white;
     box-shadow: 0px 4px 50px rgba(0, 0, 0, 0.15);
-    width: 90vw;
-    padding: 1%;
+    width: 65vw;
+    //padding: 1%;
     overflow-y: auto;
-    height: 90vh;
+    height: 80vh;
     padding: 30px 20px 80px 15px;
   }
 `;
@@ -90,12 +90,12 @@ export const StyledPopup = styled(Popup)`
 `;
 
 export const StyledPopupButton = styled.button`
-  //cursor: pointer;
-  //font-size: 18px;
-  //font-family: 'Audiowide', cursive;
-  //font-weight: 600;
-  //color: #646464;
-  //transition: 0.3s;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: 'Audiowide', cursive;
+  font-weight: 600;
+  color: #646464;
+  transition: 0.3s;
   &:hover {
     color: #000;
   }
@@ -130,6 +130,9 @@ export const StyledPopupSpan = styled.span`
   display: flex;
   align-items: center;
   width: 170px;
+  font-family: 'Audiowide', cursive;
+  font-weight: 600;
+  color: #646464;
 `;
 
 export const StyledAvailableCell = styled.span`
@@ -155,7 +158,7 @@ export const CurrentPlayerText = styled.div`
 `;
 
 export const StyledLostFigures = styled.div`
-  margin: 50px auto 0px 10px;
+  margin: 50px auto 0 10px;
 `;
 
 export const TransformFigure = styled.div`

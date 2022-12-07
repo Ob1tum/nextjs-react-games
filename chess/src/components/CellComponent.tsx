@@ -5,6 +5,9 @@ import { FC } from 'react';
 import { Cell as StyledCell, StyledAvailableCell } from '../styles/chess.style';
 import { Cell } from '../models/Cell';
 import { King } from '../models/figures/King';
+import { useAppSelector } from '../../../hooks';
+
+import styles from './CellComponent.module.scss';
 
 interface CellProps {
   cell: Cell;
@@ -18,7 +21,9 @@ const CellComponent: FC<CellProps> = ({ cell, selected, click }) => {
     // eslint-disable-next-line no-nested-ternary
     return selected ? '#58514d' : cell.color === 'white' ? '#f1dad0' : 'grey';
   }
-
+  const current = useAppSelector((state) => state.rootSlice.currentPlayer);
+  const changeFigure =
+    current?.label?.colors === 'белые' ? `${styles.figure}` : `${styles.transformFigure}`;
   return (
     <StyledCell
       color={getCellColor(selected)}
@@ -37,7 +42,11 @@ const CellComponent: FC<CellProps> = ({ cell, selected, click }) => {
       }}
     >
       {cell.available && !cell.figure && <StyledAvailableCell />}
-      {cell.figure?.logo && <Image width="65" height="65" src={cell.figure.logo} alt="figure" />}
+      {cell.figure?.logo && (
+        <span className={changeFigure}>
+          <Image src={cell.figure.logo} alt="figure" />
+        </span>
+      )}
     </StyledCell>
   );
 };

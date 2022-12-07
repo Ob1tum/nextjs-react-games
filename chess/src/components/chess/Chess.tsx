@@ -30,7 +30,9 @@ import styles from './chess.module.scss';
 
 const Chess = () => {
   const [board, setBoard] = useState(new Board());
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [whitePlayer, setWhitePlayer] = useState(new Player(Colors.WHITE));
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [blackPlayer, setBlackPlayer] = useState(new Player(Colors.BLACK));
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null);
   const settingsGame = useRef({
@@ -40,6 +42,7 @@ const Chess = () => {
     gameMode: GameMode.friendOffline,
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [gainTime, setGainTime] = useState<string | null>(null);
 
   const rival = useAppSelector((state) => state.rootSlice.rival);
@@ -47,11 +50,12 @@ const Chess = () => {
 
   // const [gameStartSettings, setGameStartSettings] = useState<GameSettings>(settingsGame.current);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [gameMode, setGameMode] = useState('');
   const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
 
   const scroll: any = useRef<HTMLInputElement>();
-  console.log(setWhitePlayer, setBlackPlayer, gainTime, setGameMode);
+  console.log(player);
 
   const restart = () => {
     const newBoard = new Board();
@@ -102,6 +106,8 @@ const Chess = () => {
           width="25"
           height="25"
           className={styles['chess__history-figure-img']}
+          /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+          // @ts-ignore
           src={step.figureData?.logo}
           alt="figure"
         />
@@ -146,6 +152,16 @@ const Chess = () => {
     <div className={styles['chess__win-message']}>Игра окончена, {stalemateInfo}</div>
   ) : null;
 
+  const playerStep =
+    player?.label.colors === 'белые'
+      ? player?.label.name || 'Вероника'
+      : rival?.label.name || 'name';
+
+  const rivalStep =
+    rival?.label.colors === 'белые'
+      ? player?.label.name || 'Вероника'
+      : rival?.label.name || 'name';
+
   return (
     <MainChess>
       <Header restart={restart} setGainTime={setGainTime} settingsGame={settingsGame.current} />
@@ -155,7 +171,7 @@ const Chess = () => {
             <div className={styles['chess__data-title']}>Матч</div>
             <div className={styles['chess__data-wrapper']}>
               <div className={styles['chess__data-suptitle']}>Режим игры:</div>
-              <span className={styles.chess__mode}>{player?.mode}</span>
+              <span className={styles.chess__mode}>{player?.label?.mode}</span>
             </div>
             <div className={styles['chess__data-suptitle']}>История ходов:</div>
             <div className={styles.chess__history}>
@@ -181,9 +197,7 @@ const Chess = () => {
             <div className={styles['chess__info-wrapper']}>
               <PlayerData
                 currentPlayer={currentPlayer}
-                /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-                // @ts-ignore
-                playerName={rival?.label.name || 'name'}
+                playerName={rivalStep}
                 playerColor={Colors.BLACK}
               />
               <CurrentPlayerText>
@@ -192,7 +206,7 @@ const Chess = () => {
               </CurrentPlayerText>
               <PlayerData
                 currentPlayer={currentPlayer}
-                playerName="PlayerName"
+                playerName={playerStep}
                 playerColor={Colors.WHITE}
               />
             </div>

@@ -33,7 +33,6 @@ export const gameMode = [
 ];
 
 export const color = [
-  { value: 'random', label: 'случайными' },
   { value: 'black', label: 'черные' },
   { value: 'white', label: 'белые' },
 ];

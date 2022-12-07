@@ -21,20 +21,24 @@ interface LobbyProps {
     gameMode: string;
   };
 }
-const Lobby: FC<LobbyProps> = ({ setGainTime, setGameTime, settingsGame }) => {
+const Lobby: FC<LobbyProps> = (props) => {
   // const dispatch = useDispatch();
   const modal = useAppSelector((state) => state.rootSlice.modalWindow);
   const isOpenModal = modal ? (
-    <GameSettings setGainTime={setGainTime} setGameTime={setGameTime} settingsGame={settingsGame} />
+    <GameSettings
+      setGainTime={props.setGainTime}
+      setGameTime={props.setGameTime}
+      settingsGame={props.settingsGame}
+    />
   ) : null;
   const gameMode = useAppSelector((state) => state.rootSlice.isOnline);
   const showPlayerList = gameMode ? <ListPlayers /> : null;
   return (
     <div className={styles.wrapper}>
       <p className={styles.title}>{isOpenModal}</p>
-      <p className={styles.rules}>
-        <RulesModal />
-      </p>
+      {/* <p className={styles.rules}> */}
+      {/*  <RulesModal /> */}
+      {/* </p> */}
       {showPlayerList}
     </div>
   );

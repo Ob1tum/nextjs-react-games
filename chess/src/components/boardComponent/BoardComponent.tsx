@@ -6,6 +6,7 @@ import { Board } from '../../models/Board';
 import { Cell } from '../../models/Cell';
 import { Player } from '../../models/Player';
 import TransformFigure from '../TransformFigure';
+import { useAppSelector } from '../../../../hooks';
 
 import styles from './BoardComponent.module.scss';
 
@@ -24,6 +25,7 @@ const BoardComponent: FC<BoardProps> = ({
   setBoard,
   currentPlayer,
   changePlayer,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   restart,
   selectedCell,
   setSelectedCell,
@@ -31,7 +33,8 @@ const BoardComponent: FC<BoardProps> = ({
   function updateBoard() {
     setBoard(board.getCopyBoard());
   }
-  console.log(restart);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function click(cell: Cell, checkMate = false, winKing = null) {
     if (selectedCell && selectedCell !== cell && selectedCell.figure?.canMove(cell)) {
       selectedCell.moveFigure(cell);
@@ -41,7 +44,6 @@ const BoardComponent: FC<BoardProps> = ({
     } else if (cell.figure?.color === currentPlayer?.color) {
       setSelectedCell(cell);
     }
-    console.log(checkMate, winKing);
   }
   function highlightCells() {
     board.highlightCells(selectedCell);
@@ -65,25 +67,33 @@ const BoardComponent: FC<BoardProps> = ({
 
   const selectFigureBox = board.transformData.shouldTransform ? transformFigureComponent : null;
 
-  const columnName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-  const rowName = ['8', '7', '6', '5', '4', '3', '2', '1'];
-  const columnNameElement = columnName.map((item, i) => (
-    <div className={styles['board__item-column']} key={i}>
-      {item}
-    </div>
-  ));
-  const rowNameElements = rowName.map((item, i) => (
-    <div className={styles['board__item-row']} key={i}>
-      {item}
-    </div>
-  ));
+  // const columnName = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  // const rowName = ['8', '7', '6', '5', '4', '3', '2', '1'];
+
+  // const columnNameElement = columnName.map((item, i) => (
+  //   <div className={styles['board__item-column']} key={i}>
+  //     {item}
+  //   </div>
+  // ));
+  // const rowNameElements = rowName.map((item, i) => (
+  //   <div className={styles['board__item-row']} key={i}>
+  //     {item}
+  //   </div>
+  // ));
+  const current = useAppSelector((state) => state.rootSlice.currentPlayer);
+
+  const changeBoard =
+    current?.label?.colors === 'белые' ? `${styles.board}` : `${styles.transformBoard}`;
+
+  // const changeItems =
+  //   current?.label?.colors === 'белые'
+  //     ? `${styles['board__items-row']}`
+  //     : `${styles['board__items-row-transform']}`;
 
   return (
-    <div className={styles.board}>
+    <div className={changeBoard}>
       {selectFigureBox}
-      <div className={`${styles.board__items} ${styles['board__items-row']}`}>
-        {rowNameElements}
-      </div>
+      {/* <div className={`${styles.board__items} ${changeItems}`}>{rowNameElements}</div> */}
       <StyledBoard>
         {board.cells.map((row, index) => (
           <React.Fragment key={index}>
@@ -98,9 +108,9 @@ const BoardComponent: FC<BoardProps> = ({
           </React.Fragment>
         ))}
       </StyledBoard>
-      <div className={`${styles.board__items} ${styles['board__items-column']}`}>
-        {columnNameElement}
-      </div>
+      {/* <div className={`${styles.board__items} ${styles['board__items-column']}`}> */}
+      {/*  {columnNameElement} */}
+      {/* </div> */}
     </div>
   );
 };

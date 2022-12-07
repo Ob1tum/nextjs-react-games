@@ -50,12 +50,6 @@ const Header: FC<HeaderProps> = ({ restart, setGainTime, settingsGame }) => {
               </li>
 
               <li className={styles.menu__item}>
-                {/* <GameSettings */}
-                {/*  setGainTime={setGainTime} */}
-                {/*  setGameTime={setGameTime} */}
-                {/*  settingsGame={settingsGame} */}
-                {/* /> */}
-                {/* <Link href="/chess">Назад в лобби</Link> */}
                 <CustomLink text="Назад в лобби" />
               </li>
 
@@ -64,9 +58,9 @@ const Header: FC<HeaderProps> = ({ restart, setGainTime, settingsGame }) => {
               </li>
             </ul>
           </nav>
-          <a href="#" className={styles['login-btn']}>
-            Войти
-          </a>
+          <li className={styles.menu__item}>
+            <CustomLink text="Выйти" />
+          </li>
         </div>
       </Container>
     </header>

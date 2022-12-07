@@ -76,10 +76,19 @@
 
 .colors,.gain,.time,.mode,.bid {
   font-family: "Audiowide", cursive;
+  color: #646464;
+
 }
 
 .title{
   color: black;
   font-family: "Audiowide", cursive;
   font-weight: bold;
+  font-size: 50px;
+}
+
+.setting__header{
+  color: #646464;
+  font-family: "Audiowide", cursive;
+  margin-bottom: 25px;
 }

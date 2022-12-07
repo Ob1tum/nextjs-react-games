@@ -11,20 +11,10 @@ export interface GameSettingsProps {
   };
 }
 
-export interface PlayersInterface {
-  colors: string;
-  mode: string;
-  time: string;
-  bids: string;
-  gain: string;
-  name: string;
-}
-
 export interface InputSelectInterface {
   value: string;
   label: string;
 }
-
 export interface ListPlayersInterface {
   value: number;
   label: {

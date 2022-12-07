@@ -1,11 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { bids, players } from '../components/gameSettings/PlayersData';
-import {
-  InputSelectInterface,
-  ListPlayersInterface,
-  PlayersInterface,
-} from '../interfaces/Interfaces';
+import { InputSelectInterface, ListPlayersInterface } from '../interfaces/Interfaces';
 
 interface DataInterface {
   gameTime: string | null;
@@ -13,8 +9,8 @@ interface DataInterface {
   modalWindow: boolean;
   isOnline: boolean;
   bidsData: InputSelectInterface[];
-  currentPlayer: PlayersInterface | null;
-  rival: PlayersInterface | null;
+  currentPlayer: ListPlayersInterface | null;
+  rival: ListPlayersInterface | null;
 }
 
 const initialState: DataInterface = {
@@ -30,6 +26,9 @@ export const rootSlice = createSlice({
   name: 'dataSlice',
   initialState,
   reducers: {
+    onLine(state) {
+      state.isOnline = !state.isOnline;
+    },
     setOnline(state) {
       state.isOnline = true;
     },
@@ -59,4 +58,5 @@ export const {
   closeModal,
   setDataForCurrentPlayer,
   setDataForRival,
+  onLine,
 } = rootSlice.actions;

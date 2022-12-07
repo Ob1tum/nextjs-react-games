@@ -1,11 +1,9 @@
 import { Colors } from '../Colors';
 import { Cell } from '../Cell';
+import logo from '../../assets/img/black-bishop.png';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const _ = require('lodash');
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const logo = require('../../assets/img/black-bishop.png');
 
 export enum FigureNames {
   FIGURE = 'Фигура',

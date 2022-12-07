@@ -17,13 +17,10 @@ const PlayerData: FC<PlayerDataProps> = ({ currentPlayer, playerName, playerColo
       ? `${styles.player} ${styles['player--active']}`
       : `${styles.player}`;
 
-  const timeElement = '-- : --';
-
   return (
     <div className={playerStyle}>
       <div className={styles.player__wrapper}>
         <div className={styles.player__name}>{playerName}</div>
-        <div className={styles.player__timer}>{timeElement}</div>
       </div>
     </div>
   );
