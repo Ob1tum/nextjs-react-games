@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -9,7 +9,7 @@ import { Player } from '../../model/Player';
 import { Figure } from '../../model/figures/Figure';
 import Modal from '../Modal/Modal';
 import { RootState } from '../../../store';
-import { players } from '../Lobbi/PlayersForOnlinePlay';
+import { setShow, setShowFirst } from '../../store/checkersReducer';
 
 import CellComponent from './CellComponent';
 
@@ -21,8 +21,6 @@ interface BoardProps {
   swapPlayer: (num: string) => void;
   swapFigure: (figure: Figure | null) => void;
   restart: () => void;
-  show: boolean;
-  setShow: (show: boolean) => void;
 }
 
 const BoardCheckers: FC<BoardProps> = ({
@@ -33,18 +31,28 @@ const BoardCheckers: FC<BoardProps> = ({
   swapPlayer,
   swapFigure,
   restart,
-  show,
-  setShow,
 }) => {
   const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
-  const [showFirst, setShowFirst] = useState(true);
+
   const [prevBlack, setPrevBlack] = useState(board.lostBlackFigure?.length);
   const [prevWhite, setPrevWhite] = useState(board.lostWhiteFigure?.length);
   let directionEmpty = selectedCell?.figure?.color === Colors.BLACK ? -1 : 1;
   let directionEmptyTwo = selectedCell?.figure?.color === Colors.BLACK ? 1 : -1;
 
-  const { isPlayWithBoot, idForPlayersOnline } = useSelector((state: RootState) => state.checkers);
+  const { isPlayWithBoot, show, showFirst, color } = useSelector(
+    (state: RootState) => state.checkers,
+  );
 
+  const transformBord = color === 'black' ? 'board-transform' : 'board';
+  const transformCheckersNumbersLeft =
+    color === 'black' ? 'checkerstransform__numbers-left' : 'checkers__numbers-left';
+  const transformCheckersNumbersRigth =
+    color === 'black' ? 'checkerstransform__numbers-right' : 'checkers__numbers-right';
+  const dispatch = useDispatch();
+  const getPlayerColorByCondition = () => currentPlayer?.name;
+  useEffect(() => {
+    getPlayerColorByCondition();
+  }, []);
   const click = (cell: Cell) => {
     let banOnHitting = true;
     let ok = 0;
@@ -487,15 +495,16 @@ const BoardCheckers: FC<BoardProps> = ({
       }
     }
   };
+
   function updateBoard() {
     const newBoard = board.getCopyBoard();
     setBoard(newBoard);
   }
-
   function highlightCells() {
     board.highlightCells(selectedCell);
     updateBoard();
   }
+
   useEffect(() => {
     highlightCells();
   }, [selectedCell]);
@@ -515,9 +524,16 @@ const BoardCheckers: FC<BoardProps> = ({
     }
     return div;
   }
-  const selectedUser = players.filter((el) => el.id === idForPlayersOnline);
-  const colorSelectedUser = selectedUser.map((el) => el.playConditional.colorCheckers).join();
-  console.log(colorSelectedUser);
+
+  const setStyleColorFigureByConditional = (condition: boolean) => {
+    if (isPlayWithBoot) {
+      if (condition) {
+        return { color: 'white', fontSize: '30px' };
+      }
+      return { color: 'black', fontSize: '30px' };
+    }
+    return { color: currentPlayer?.color, fontSize: '30px' };
+  };
 
   return (
     <div className="page__checkers">
@@ -531,7 +547,7 @@ const BoardCheckers: FC<BoardProps> = ({
             ) : (
               <span>Белого</span>
             )}{' '}
-            игрока с победой!!!
+            игрока с победой!!! игрока с победой!!!
           </h2>
           <div className="wrap">{displayForm()}</div>
           <div className="checkers__win-buttons">
@@ -539,7 +555,7 @@ const BoardCheckers: FC<BoardProps> = ({
               Продолжить игру
             </button>
             <button type="button" className="win-button__right">
-              <Link href="../../../checkers">Выйти на главную</Link>
+              <Link href="/">Выйти на главную</Link>
             </button>
           </div>
         </div>
@@ -552,7 +568,7 @@ const BoardCheckers: FC<BoardProps> = ({
             </h3>
             <span className="left-count__number">{board.lostWhiteFigure?.length}</span>
           </div>
-          <div className="checkers__numbers-left">
+          <div className={transformCheckersNumbersLeft}>
             <ul>
               <li>1</li>
               <li>2</li>
@@ -570,13 +586,9 @@ const BoardCheckers: FC<BoardProps> = ({
                 Текущий ход{' '}
                 <span
                   className="checkers__content-title__player"
-                  style={
-                    currentFigure?.color === 'white'
-                      ? { color: 'white', fontSize: '30px' }
-                      : { color: 'black', fontSize: '30px' }
-                  }
+                  style={setStyleColorFigureByConditional(currentPlayer?.color === 'white')}
                 >
-                  {currentFigure?.color === 'white' ? 'Белого' : 'Черного'}
+                  {getPlayerColorByCondition()}
                 </span>{' '}
                 игрока{' '}
               </h3>
@@ -585,19 +597,9 @@ const BoardCheckers: FC<BoardProps> = ({
                 Текущий ход{' '}
                 <span
                   className="checkers__content-title__player"
-                  style={
-                    currentPlayer?.color === 'white'
-                      ? { color: 'white', fontSize: '30px' }
-                      : { color: 'black', fontSize: '30px' }
-                  }
+                  style={setStyleColorFigureByConditional(currentPlayer?.color === 'white')}
                 >
-                  {isPlayWithBoot === true
-                    ? currentPlayer?.color === 'white'
-                      ? 'Белого игрока'
-                      : 'Черного игрока'
-                    : currentPlayer?.color === 'white'
-                    ? selectedUser.map((el) => el.name) || 'Белого'
-                    : 'Черного'}
+                  {getPlayerColorByCondition()}
                 </span>{' '}
                 {/* игрока{' '} */}
               </h3>
@@ -620,8 +622,8 @@ const BoardCheckers: FC<BoardProps> = ({
                 type="button"
                 className="checkers__modal-button"
                 onClick={() => {
-                  setShow(true);
-                  setShowFirst(false);
+                  dispatch(setShow(true));
+                  dispatch(setShowFirst(false));
                 }}
               >
                 Правила игры
@@ -632,7 +634,7 @@ const BoardCheckers: FC<BoardProps> = ({
                     ? 'Уважаемый игрок, перед началом игры ознакомьтесь пожалуйста с правилами!'
                     : 'Правила игры'
                 }
-                onClose={() => setShow(false)}
+                onClose={() => dispatch(setShow(false))}
                 show={show}
               >
                 <p style={{ color: 'red' }}>
@@ -643,10 +645,9 @@ const BoardCheckers: FC<BoardProps> = ({
                   сторонах доски.
                 </p>
                 <p>
-                  Выбор цвета игроками определяется жребием или по договоренности. Шашки
-                  расставляются на четырех, ближних к игроку, рядах на белых (светлых) клетках.
-                  Право первого хода обычно принадлежит игроку, который играет белым (светлым)
-                  цветом. Ходы осуществляются соперниками поочередно.
+                  Шашки расставляются на четырех, ближних к игроку, рядах на белых (светлых)
+                  клетках. Право первого хода обычно принадлежит игроку, который играет белым
+                  (светлым) цветом. Ходы осуществляются соперниками поочередно.
                 </p>
                 <p>
                   В начале игры все шашки соперников являются простыми. Простые шашки можно
@@ -680,13 +681,18 @@ const BoardCheckers: FC<BoardProps> = ({
                   свободное пространство после взятой шашки.
                 </p>
                 <div className="modal-footer">
-                  <button className="modal-button" type="button" onClick={() => setShow(false)}>
+                  <button
+                    className="modal-button"
+                    type="button"
+                    onClick={() => dispatch(setShow(false))}
+                  >
                     Закрыть
                   </button>
                 </div>
               </Modal>
             </div>
-            <div className="board">
+
+            <div className={transformBord}>
               {board.cells.map((row, index) => (
                 <React.Fragment key={index}>
                   {row.map((cell) => (
@@ -713,7 +719,7 @@ const BoardCheckers: FC<BoardProps> = ({
               </ul>
             </div>
           </div>
-          <div className="checkers__numbers-right">
+          <div className={transformCheckersNumbersRigth}>
             <ul>
               <li>1</li>
               <li>2</li>

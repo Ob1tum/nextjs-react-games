@@ -27,8 +27,8 @@ const ThemeList: NextPage = () => {
     themesList && (
       <div className={styles.container}>
         <ul className={styles.list}>
-          {themesList.map((theme) => (
-            <Link key={theme.name} href="/hangman/game">
+          {themesList.map((theme: any) => (
+            <Link key={theme.name} href="../hangman/game">
               <a onClick={onClick(theme)}>
                 <li className={styles.item}>{`${theme.label[0].toUpperCase()}${theme.label.slice(
                   1,

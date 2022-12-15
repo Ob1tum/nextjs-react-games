@@ -2,11 +2,9 @@ import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
 
-import Layout from '../components/layout/layout';
+import { Layout } from '../user/layout/layout';
 import { store } from '../store';
-
 import '../styles/index.scss';
-import '../checkers/styles/globals.css';
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => (
   <Layout>
