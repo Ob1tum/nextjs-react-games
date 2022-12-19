@@ -9,7 +9,7 @@ import { LEVEL_COUNT } from '../components/game-score/level-count';
 import { InitialStateType } from '../types/types';
 import { randomDetail } from '../components/details/details';
 
-const initialState: InitialStateType = {
+export const initialState: InitialStateType = {
   detailsInPlay: [],
   stage: createStage(),
   nextDetailStage: createNextDetailStage(),
