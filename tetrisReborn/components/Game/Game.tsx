@@ -23,13 +23,14 @@ const Game: FC = () => {
   useEffect(() => {
     timer.current = setInterval(() => {
       field.moveCurrentFigure(MoveDirection.BOTTOM);
-      setField(field.updateBoard());
+      setField(field.update());
     }, 1000);
 
     return () => clearInterval(timer.current);
   }, []);
 
   useEffect(() => {
+    // TODO: send the score to backend (maybe only if it beats one of the highest)
     if (gameOver) clearInterval(timer.current);
   }, [gameOver]);
 
@@ -53,13 +54,13 @@ const Game: FC = () => {
       case KeyCodes.UP_ARROW:
         e.preventDefault(); // prevent page scroll
       case KeyCodes.W:
-        console.log('w');
+        needToUpdateField = field.rotateCurrentFigure();
         break;
       default:
         break;
     }
 
-    if (needToUpdateField) setField(field.updateBoard());
+    if (needToUpdateField) setField(field.update());
   }, []);
 
   return (

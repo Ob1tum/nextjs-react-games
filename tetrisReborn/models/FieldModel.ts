@@ -1,5 +1,6 @@
 import CellModel from "./CellModel";
 import Figure from "./figures/Figure";
+import I from "./figures/I";
 import { MoveDirection } from "./figures/MoveDirection";
 import O from "./figures/O";
 import { fieldHeight, fieldWidth } from "./static-data";
@@ -14,7 +15,7 @@ export default class FieldModel {
   score: number = 0;
 
   private createRandomFigure(): Figure {
-    return new O();
+    return new I();
   }
 
   private getCopy(): FieldModel {
@@ -125,6 +126,17 @@ export default class FieldModel {
     return true;
   }
 
+  private possibleRotation(rotated: Figure): boolean {
+    const rotatedFigureCells = rotated.getCellsArray();
+    for (let i = 0; i < rotatedFigureCells.length; i++) {
+      const { x, y } = rotatedFigureCells[i];
+      const potentialCell = this.cells.find((c) => c.x === x && c.y === y && !c.filled);
+      if (!potentialCell) return false;
+    }
+
+    return true;
+  }
+
   initGame(): FieldModel {
     for (let i = 0; i < fieldHeight; i++) {
       for (let j = 0; j < fieldWidth; j++) {
@@ -134,7 +146,7 @@ export default class FieldModel {
 
     this.nextFigure = this.createRandomFigure();
     this.currentFigure = this.createRandomFigure();
-    return this.updateBoard();
+    return this.update();
   }
 
   moveCurrentFigure(direction: MoveDirection): boolean {
@@ -149,7 +161,19 @@ export default class FieldModel {
     }
   }
 
-  updateBoard(): FieldModel {
+  rotateCurrentFigure(): boolean {
+    const rotated = this.currentFigure.nextRotate();
+    if (rotated === this.currentFigure) return false;
+
+    const isRotationPossible = this.possibleRotation(rotated);
+    if (isRotationPossible) {
+      this.currentFigure = rotated;
+    }
+
+    return isRotationPossible;
+  }
+
+  update(): FieldModel {
     for (let i = 0; i < this.cells.length; i++) {
       const cell = this.cells[i];
       if (!cell.filled) cell.hasFigure = this.currentFigure.onCell(cell);

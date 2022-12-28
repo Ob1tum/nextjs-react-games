@@ -6,11 +6,21 @@ import { Rotate } from "./Rotate";
 export default abstract class Figure {
   protected cells: CellModel[] = [];
   protected rotate: Rotate = Rotate.ZERO_DEG;
+  protected displacementX: number;
+  protected displacementY: number;
 
-  abstract nextRotate(): void;
+  abstract nextRotate(): Figure;
 
-  displacementX: number;
-  displacementY: number;
+  constructor(displacementX?: number, displacementY?: number, rotate?: Rotate) {
+    this.displacementX = displacementX === undefined 
+      ? Math.floor(fieldWidth / 2) - 2
+      : displacementX;
+
+    this.displacementY = displacementY === undefined 
+      ? 0 
+      : displacementY;
+    this.rotate = rotate ? rotate : Rotate.ZERO_DEG;
+  }
 
   getCellsArrayForNextFigure(): CellModel[] {
     const result: CellModel[] = [];
