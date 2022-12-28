@@ -17,10 +17,10 @@ export default abstract class Figure {
 
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
-        if (this.cells.find((c) => c.x === i - 1 && c.y === j - 1)) 
-          result.push(new CellModel(i + 1, j + 1, true));
+        if (this.cells.find((c) => c.x === j - 1 && c.y === i - 1)) 
+          result.push(new CellModel(j + 1, i + 1, true));
         else
-          result.push(new CellModel(i + 1, j + 1));
+          result.push(new CellModel(j + 1, i + 1));
       }
     }
 

@@ -39,54 +39,90 @@ export default class FieldModel {
     }
   }
 
+  private findFilledRows(filledRows: Set<number>) {
+    let rowsToDistruction: number[] = [];
+    filledRows.forEach((y) => {
+      const row = this.cells.filter((c) => c.y === y && c.filled);
+      if (row.length < fieldWidth) return;
+      for (let i = 0; i < row.length; i++) {
+        row[i].filled = false;
+      }
+      rowsToDistruction.push(y);
+    });
+
+    return rowsToDistruction;
+  }
+
+  private checkRowDestruction(filledRows: Set<number>) {
+    let destructedRows: number[] = this.findFilledRows(filledRows);
+    
+    if (!destructedRows.length) return;
+
+    const lastDestructuredRow = destructedRows[0];
+    const firstDestructuredRow = destructedRows[destructedRows.length - 1];
+
+    const destructuredCount = destructedRows.length;
+    const cellsToMoveDown = this.cells.filter((c) => c.y < firstDestructuredRow);
+    const cellsToMoveUp = this.cells.filter((c) => c.y >= firstDestructuredRow && c.y <= lastDestructuredRow);
+
+    for (let i = 0; i < cellsToMoveDown.length; i++) {
+      const cellToMove = cellsToMoveDown[i];
+      cellToMove.y += destructuredCount;
+    }
+
+    for (let i = 0; i < cellsToMoveUp.length; i++) {
+      const cellToMove = cellsToMoveUp[i];
+      cellToMove.y -= firstDestructuredRow;
+    }
+
+    this.cells.sort((a, b) => {
+      return a.y - b.y || a.x - b.x;
+    });
+  }
+
   private spawnNextFigure() {
-    const cellsToFill = this.currentFigure.getCellsArray();
-    for (let i = 0; i < cellsToFill.length; i++) {
-      const { x, y } = cellsToFill[i];
-      const cell = this.cells.find((c) => c.x === x && c.y === y);
-      cell.filled = true;
+    const figureCells = this.currentFigure.getCellsArray();
+    for (let i = 0; i < figureCells.length; i++) {
+      const { x, y } = figureCells[i];
+      const cellToFill = this.cells.find((c) => c.x === x && c.y === y);
+      cellToFill.filled = true;
     }
 
     this.checkGameOver();
+    // pass the set of sorted Y's (numbers of row, which cells was filled)
+    this.checkRowDestruction(new Set<number>(figureCells.map((c) => c.y).sort((a, b) => b - a)));
 
     this.currentFigure = this.nextFigure;
     this.nextFigure = this.createRandomFigure();
   }
 
-  private horizontalMove(direction: MoveDirection) {
+  private horizontalMove(direction: MoveDirection): boolean {
     const figureCellsArr = this.currentFigure.getCellsArray();
     
     for (let i = 0; i < figureCellsArr.length; i++) {
       const figureCell = figureCellsArr[i];
       const leftCell = this.cells.find((c) => c.x === figureCell.x + (direction as number) && c.y === figureCell.y)
-      if (!leftCell || leftCell.filled) return;
+      if (!leftCell || leftCell.filled) return false;
     }
 
     this.currentFigure.move(direction);
+    return true;
   }
 
-  private moveBottom() {
+  private moveBottom(): boolean {
     const figureCellsArr = this.currentFigure.getCellsArray();
-    const maxY = Math.max(...figureCellsArr.map((c) => c.y));
 
-    const xCoordinates = figureCellsArr.map((c) => c.x);
-    const minX = Math.min(...xCoordinates);
-    const maxX = Math.max(...xCoordinates);
-
-    if (maxY + 1 === fieldHeight) {
-      this.spawnNextFigure();
-      return;
-    }
-
-    for (let i = minX; i <= maxX; i++) {
-      const cellToCheck = this.cells.find((c) => c.x === i && c.y === maxY + 1);
-      if (cellToCheck.filled) {
+    for (let i = 0; i < figureCellsArr.length; i++) {
+      const { x, y } = figureCellsArr[i];
+      const bottomCell = this.cells.find((c) => c.x === x && c.y === y + 1);
+      if (!bottomCell || bottomCell.filled) {
         this.spawnNextFigure();
-        return;
+        return false;
       }
     }
 
     this.currentFigure.move(MoveDirection.BOTTOM);
+    return true;
   }
 
   initGame(): FieldModel {
@@ -101,17 +137,15 @@ export default class FieldModel {
     return this.updateBoard();
   }
 
-  moveCurrentFigure(direction: MoveDirection) {
+  moveCurrentFigure(direction: MoveDirection): boolean {
     switch (direction) {
       case MoveDirection.BOTTOM:
-        this.moveBottom();
-        break;
+        return this.moveBottom();
       case MoveDirection.LEFT:
       case MoveDirection.RIGHT:
-        this.horizontalMove(direction);
-        break;
+        return this.horizontalMove(direction);
       default:
-        break;
+        return false;
     }
   }
 
@@ -123,6 +157,4 @@ export default class FieldModel {
 
     return this.getCopy();
   }
-
-
 }

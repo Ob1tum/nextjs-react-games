@@ -35,22 +35,20 @@ const Game: FC = () => {
 
   const onKeyDown = useCallback((e: BaseSyntheticEvent) => {
     const { keyCode } = e.nativeEvent as NativeEvent;
+    let needToUpdateField = false;
     switch (keyCode) {
       case KeyCodes.A:
       case KeyCodes.LEFT_ARROW:
-        field.moveCurrentFigure(MoveDirection.LEFT);
-        setField(field.updateBoard());
+        needToUpdateField = field.moveCurrentFigure(MoveDirection.LEFT);
         break;
       case KeyCodes.DOWN_ARROW:
         e.preventDefault(); // prevent page scroll
       case KeyCodes.S:
-        field.moveCurrentFigure(MoveDirection.BOTTOM);
-        setField(field.updateBoard());
+        needToUpdateField = field.moveCurrentFigure(MoveDirection.BOTTOM);
         break;
       case KeyCodes.D:
       case KeyCodes.RIGHT_ARROW:
-        field.moveCurrentFigure(MoveDirection.RIGHT)
-        setField(field.updateBoard());
+        needToUpdateField = field.moveCurrentFigure(MoveDirection.RIGHT);
         break;
       case KeyCodes.UP_ARROW:
         e.preventDefault(); // prevent page scroll
@@ -60,6 +58,8 @@ const Game: FC = () => {
       default:
         break;
     }
+
+    if (needToUpdateField) setField(field.updateBoard());
   }, []);
 
   return (
