@@ -1,10 +1,9 @@
 import CellModel from "../CellModel";
-import { fieldWidth } from "../static-data";
 import Figure from "./Figure";
 
 export default class O extends Figure {
   constructor() {
-    super(Math.floor(fieldWidth / 2));
+    super();
 
     for (let i = 0; i < 2; i++) {
       for (let j = 0; j < 2; j++) {

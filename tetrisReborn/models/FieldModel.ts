@@ -1,21 +1,23 @@
 import CellModel from "./CellModel";
+import FigureGenerator from "./FigureGenerator";
 import Figure from "./figures/Figure";
-import I from "./figures/I";
 import { MoveDirection } from "./figures/MoveDirection";
-import O from "./figures/O";
+import { Level, needToLevelUp } from "./Level";
 import { fieldHeight, fieldWidth } from "./static-data";
 
 export default class FieldModel {
+  private figGenerator = new FigureGenerator();
+
   cells: CellModel[] = [];
   nextFigure: Figure | null = null;
   currentFigure: Figure | null = null;
   gameOver: boolean = false;
+  level: Level = Level.SUPER_EASY;
 
-  level: number = 1;
   score: number = 0;
 
   private createRandomFigure(): Figure {
-    return new I();
+    return this.figGenerator.next();
   }
 
   private getCopy(): FieldModel {
@@ -24,6 +26,8 @@ export default class FieldModel {
     newField.currentFigure = this.currentFigure;
     newField.nextFigure = this.nextFigure;
     newField.gameOver = this.gameOver;
+    newField.level = this.level;
+    newField.score = this.score;
     return newField;
   }
 
@@ -33,7 +37,7 @@ export default class FieldModel {
     for (let i = 0; i < nextFigureCellsArr.length; i++) {
       const figureCell = nextFigureCellsArr[i];
       const cellToCheck = this.cells.find((c) => c.x === figureCell.x && c.y === figureCell.y);
-      if (cellToCheck.filled) {
+      if (cellToCheck?.filled) {
         this.gameOver = true;
         return;
       }
@@ -54,6 +58,12 @@ export default class FieldModel {
     return rowsToDistruction;
   }
 
+  private raiseScore(destructedRowsCount: number) {
+    this.score += destructedRowsCount * (this.level as number) * fieldWidth;
+    const nextLevel = needToLevelUp(this.score, this.level);
+    if (nextLevel) this.level = nextLevel;
+  }
+
   private checkRowDestruction(filledRows: Set<number>) {
     let destructedRows: number[] = this.findFilledRows(filledRows);
     
@@ -63,6 +73,7 @@ export default class FieldModel {
     const firstDestructuredRow = destructedRows[destructedRows.length - 1];
 
     const destructuredCount = destructedRows.length;
+    this.raiseScore(destructuredCount);
     const cellsToMoveDown = this.cells.filter((c) => c.y < firstDestructuredRow);
     const cellsToMoveUp = this.cells.filter((c) => c.y >= firstDestructuredRow && c.y <= lastDestructuredRow);
 
@@ -86,7 +97,7 @@ export default class FieldModel {
     for (let i = 0; i < figureCells.length; i++) {
       const { x, y } = figureCells[i];
       const cellToFill = this.cells.find((c) => c.x === x && c.y === y);
-      cellToFill.filled = true;
+      if (cellToFill) cellToFill.filled = true;
     }
 
     this.checkGameOver();

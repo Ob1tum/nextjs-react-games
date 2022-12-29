@@ -13,7 +13,7 @@ export default abstract class Figure {
 
   constructor(displacementX?: number, displacementY?: number, rotate?: Rotate) {
     this.displacementX = displacementX === undefined 
-      ? Math.floor(fieldWidth / 2) - 2
+      ? (Math.floor(fieldWidth / 2) - 1)
       : displacementX;
 
     this.displacementY = displacementY === undefined 

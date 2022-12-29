@@ -1,10 +1,12 @@
 import CellModel from "../CellModel";
+import { fieldWidth } from "../static-data";
 import Figure from "./Figure";
 import { Rotate } from "./Rotate";
 
 export default class I extends Figure {
   constructor(cells?: CellModel[], displacementX?: number, displacementY?: number, rotate?: Rotate) {
-    super(displacementX, displacementY, rotate);
+    const dspX = displacementX === undefined ? Math.floor(fieldWidth / 2) - 2 : displacementX;
+    super(dspX, displacementY, rotate);
     
     if (!cells) {
       for (let i = 0; i < 4; i++) {
@@ -27,7 +29,8 @@ export default class I extends Figure {
             new CellModel(0, 3, true),
           ],
           this.displacementX + 1,
-          this.displacementY - 1,
+          // only for spawn vertical I
+          this.displacementY ? this.displacementY - 1 : this.displacementY,
           Rotate.NINETY_DEG
         );
       case Rotate.NINETY_DEG:

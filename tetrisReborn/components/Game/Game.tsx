@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BaseSyntheticEvent, FC, useCallback, useEffect, useRef, useState } from "react";
 import FieldModel from "../../models/FieldModel";
 import { MoveDirection } from "../../models/figures/MoveDirection";
+import { getTickTime } from "../../models/Level";
 import { KeyCodes, NativeEvent } from "../../types/NativeEvent";
 import Button from "../Button/Button";
 import Wrapper from "../Wrapper/Wrapper";
@@ -24,10 +25,11 @@ const Game: FC = () => {
     timer.current = setInterval(() => {
       field.moveCurrentFigure(MoveDirection.BOTTOM);
       setField(field.update());
-    }, 1000);
+      console.log(field);
+    }, getTickTime(level));
 
     return () => clearInterval(timer.current);
-  }, []);
+  }, [level]);
 
   useEffect(() => {
     // TODO: send the score to backend (maybe only if it beats one of the highest)
@@ -61,7 +63,7 @@ const Game: FC = () => {
     }
 
     if (needToUpdateField) setField(field.update());
-  }, []);
+  }, [level]);
 
   return (
     <Wrapper onKeyDown={onKeyDown}>
