@@ -44,15 +44,19 @@ export default class FieldModel {
     }
   }
 
-  private findFilledRows(filledRows: Set<number>) {
-    let rowsToDistruction: number[] = [];
+  private clearRow(row: CellModel[]) {
+    for (let i = 0; i < row.length; i++) {
+      row[i].filled = false;
+    }
+  }
+
+  private findFilledRows(filledRows: Set<number>): Set<number> {
+    let rowsToDistruction = new Set<number>();
     filledRows.forEach((y) => {
       const row = this.cells.filter((c) => c.y === y && c.filled);
       if (row.length < fieldWidth) return;
-      for (let i = 0; i < row.length; i++) {
-        row[i].filled = false;
-      }
-      rowsToDistruction.push(y);
+      this.clearRow(row);
+      rowsToDistruction.add(y);
     });
 
     return rowsToDistruction;
@@ -65,26 +69,22 @@ export default class FieldModel {
   }
 
   private checkRowDestruction(filledRows: Set<number>) {
-    let destructedRows: number[] = this.findFilledRows(filledRows);
-    
-    if (!destructedRows.length) return;
+    let destructedRows = this.findFilledRows(filledRows);
+    const destructuredCount = destructedRows.size;
+    if (!destructuredCount) return;
 
-    const lastDestructuredRow = destructedRows[0];
-    const firstDestructuredRow = destructedRows[destructedRows.length - 1];
-
-    const destructuredCount = destructedRows.length;
     this.raiseScore(destructuredCount);
-    const cellsToMoveDown = this.cells.filter((c) => c.y < firstDestructuredRow);
-    const cellsToMoveUp = this.cells.filter((c) => c.y >= firstDestructuredRow && c.y <= lastDestructuredRow);
 
-    for (let i = 0; i < cellsToMoveDown.length; i++) {
-      const cellToMove = cellsToMoveDown[i];
-      cellToMove.y += destructuredCount;
-    }
-
-    for (let i = 0; i < cellsToMoveUp.length; i++) {
-      const cellToMove = cellsToMoveUp[i];
-      cellToMove.y -= firstDestructuredRow;
+    let movedCells = 0; // need for calc offset by Y
+    for (let i = this.cells.length - 1; i >= 0; i--) {
+      const cell = this.cells[i];
+      if (destructedRows.has(cell.y)) {
+        cell.y = 0;
+        cell.y += Math.floor(movedCells / fieldWidth);
+        movedCells++;
+      } else {
+        cell.y += Math.floor(movedCells / fieldWidth);
+      }
     }
 
     this.cells.sort((a, b) => {

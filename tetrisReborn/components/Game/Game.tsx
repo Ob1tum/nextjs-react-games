@@ -25,7 +25,6 @@ const Game: FC = () => {
     timer.current = setInterval(() => {
       field.moveCurrentFigure(MoveDirection.BOTTOM);
       setField(field.update());
-      console.log(field);
     }, getTickTime(level));
 
     return () => clearInterval(timer.current);
@@ -37,6 +36,8 @@ const Game: FC = () => {
   }, [gameOver]);
 
   const onKeyDown = useCallback((e: BaseSyntheticEvent) => {
+    if (gameOver) return;
+
     const { keyCode } = e.nativeEvent as NativeEvent;
     let needToUpdateField = false;
     switch (keyCode) {
