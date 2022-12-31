@@ -11,10 +11,11 @@ export default class FieldModel {
   cells: CellModel[] = [];
   nextFigure: Figure | null = null;
   currentFigure: Figure | null = null;
+
   gameOver: boolean = false;
   level: Level = Level.SUPER_EASY;
-
   score: number = 0;
+  gameId: number = 0;
 
   private createRandomFigure(): Figure {
     return this.figGenerator.next();
@@ -28,6 +29,7 @@ export default class FieldModel {
     newField.gameOver = this.gameOver;
     newField.level = this.level;
     newField.score = this.score;
+    newField.gameId = this.gameId;
     return newField;
   }
 
@@ -158,6 +160,18 @@ export default class FieldModel {
     this.nextFigure = this.createRandomFigure();
     this.currentFigure = this.createRandomFigure();
     return this.update();
+  }
+
+  restartGame(): FieldModel {
+    this.cells = [];
+    
+    this.nextFigure = null;
+    this.currentFigure = null;
+    this.gameOver = false;
+    this.level = Level.SUPER_EASY;
+    this.score = 0;
+    this.gameId++;
+    return this.initGame();
   }
 
   moveCurrentFigure(direction: MoveDirection): boolean {

@@ -15,7 +15,7 @@ const Game: FC = () => {
   const [field, setField] = useState(new FieldModel());
   const timer = useRef(null);
 
-  const { gameOver, level, score } = field;
+  const { gameOver, level, score, gameId } = field;
   
   useEffect(() => {
     setField(field.initGame());
@@ -28,12 +28,16 @@ const Game: FC = () => {
     }, getTickTime(level));
 
     return () => clearInterval(timer.current);
-  }, [level]);
+  }, [level, gameId]);
 
   useEffect(() => {
     // TODO: send the score to backend (maybe only if it beats one of the highest)
     if (gameOver) clearInterval(timer.current);
   }, [gameOver]);
+
+  const restartGame = () => {
+    setField(field.restartGame());
+  }
 
   const onKeyDown = useCallback((e: BaseSyntheticEvent) => {
     if (gameOver) return;
@@ -64,7 +68,7 @@ const Game: FC = () => {
     }
 
     if (needToUpdateField) setField(field.update());
-  }, [level]);
+  }, [level, gameId]);
 
   return (
     <Wrapper onKeyDown={onKeyDown}>
@@ -78,7 +82,7 @@ const Game: FC = () => {
             <SideBar nextFigure={field.nextFigure} level={level} points={score} />
           </div>
         </div>
-        {gameOver && <GameOver />}
+        {gameOver && <GameOver score={score} restartGame={restartGame} />}
       </div>
     </Wrapper>
   );

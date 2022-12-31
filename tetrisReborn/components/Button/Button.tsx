@@ -3,12 +3,13 @@ import classes from './Button.module.scss';
 
 interface IButtonProps {
   text: string;
+  onClick?: () => void;
 }
 
-const Button: FC<IButtonProps> = ({ text }) => {
+const Button: FC<IButtonProps> = ({ text, onClick }) => {
 
   return (
-    <button className={classes.Button}>{text}</button>
+    <button className={classes.Button} onClick={onClick}>{text}</button>
   );
 }
 
