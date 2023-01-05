@@ -15,16 +15,17 @@ const GameComponent: FC = () => {
 
   const addCardToPlayer = (player: Player) => {
     player.takeCard(deck.getNextCard());
-    if (player.overflow) playerStanded(player);
+    if (player.overflow) standPlayerHand(player);
     setGame(game.updateGame());
   }
 
-  const playerStanded = (player: Player) => {
+  const standPlayerHand = (player: Player) => {
     player.stand();
     const playersInGame = game.players.filter((p) => !p.standed);
     if (!playersInGame || playersInGame.length === 0) {
       passTurnToDealer();
     }
+    setGame(game.updateGame());
   }
 
   const passTurnToDealer = () => {
@@ -38,7 +39,14 @@ const GameComponent: FC = () => {
     }, 2000);
   }
 
+  const playerSplit = (player: Player) => {
+    if (!player.isSplitPossible()) return;
+    player.playSplit(deck.getNextCard(), deck.getNextCard());
+    setGame(game.updateGame());
+  }
+
   const players = game.players.map((p) => (
+    <>
     <div className={classes.PlayerInfo}>
       <div>balance: {p.balance}</div>
       {p.cards.map((c) => (
@@ -49,8 +57,20 @@ const GameComponent: FC = () => {
       ))}
       <div>score: {p.getScore()}</div>
       {!roundFinished && <button type="button" onClick={() => addCardToPlayer(p)}>hit</button>}
-      {!roundFinished && <button type="button" onClick={() => playerStanded(p)}>stand</button>}
+      {!roundFinished && <button type="button" onClick={() => standPlayerHand(p)}>stand</button>}
+      {!roundFinished && !p.split && p.isSplitPossible() && <button type="button" onClick={() => playerSplit(p)}>split</button>}
     </div>
+    {p.split && 
+      <div>
+        {p.splitedCards.map((c) => (
+          <div className={classes.Card}>
+            <div>suit: {c.suit}</div>
+            <div>name: {c.name}</div>
+          </div>
+        ))}
+      </div>
+    }
+  </>
   ));
 
   return (

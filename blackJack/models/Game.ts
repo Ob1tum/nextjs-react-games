@@ -31,11 +31,9 @@ export default class Game {
     this.deck = new Deck();
     for (let i = 0; i < this.players.length; i++) {
       const player = this.players[i];
-      player.overflow = false;
-      player.standed = false;
-      player.resetHand(this.deck.getNextHand());
+      player.nextRound(this.deck.getNextHand());
     }
-    this.dealer.resetHand(this.deck.getNextHand());
+    this.dealer.nextRound(this.deck.getNextHand());
 
     return this.getCopy();
   }

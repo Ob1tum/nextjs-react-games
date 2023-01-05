@@ -1,5 +1,5 @@
 import Card from "./Card";
-import { CardName } from "./CardName";
+import { getCardScore } from "./CardName";
 
 export default class Player {
   id: number;
@@ -10,6 +10,12 @@ export default class Player {
   standed: boolean = false;
   overflow: boolean = false;
 
+  private splitSecondRound = false;
+  splitedCards: Card[] = [];
+  split: boolean = false;
+  splitBet: number = 25;
+  splitOverflow: boolean = false;
+
   constructor(hand: Card[]) {
     this.cards.push(...hand);
   }
@@ -17,44 +23,23 @@ export default class Player {
   getScore(): number {
     let score = 0;
     for (let i = 0; i < this.cards.length; i++) {
-      switch (this.cards[i].name) {
-        case CardName.ACE:
-          score += score + 11 > 21 ? 1 : 11;
-          break;
-        case CardName.TWO:
-          score += 2;
-          break;
-        case CardName.THREE:
-          score += 3;
-          break;
-        case CardName.FOUR:
-          score += 4;
-          break;
-        case CardName.FIVE:
-          score += 5;
-          break;
-        case CardName.SIX:
-          score += 6;
-          break;
-        case CardName.SEVEN:
-          score += 7;
-          break;
-        case CardName.EIGHT:
-          score += 8;
-          break;
-        case CardName.NINE:
-          score += 9;
-          break;
-        case CardName.TEN:
-        case CardName.JACK:
-        case CardName.QUEEN:
-        case CardName.KING:
-          score += 10;
-          break;
-      }
+      score += getCardScore(this.cards[i].name);
     }
 
     return score;
+  }
+
+  getSplitedScore(): number {
+    let score = 0;
+    for (let i = 0; i < this.splitedCards.length; i++) {
+      score += getCardScore(this.splitedCards[i].name);
+    }
+
+    return score;
+  }
+
+  private resetHand(cards: Card[]) {
+    this.cards = [...cards];
   }
 
   takeCard(card: Card) {
@@ -62,11 +47,43 @@ export default class Player {
     if (this.getScore() > 21) this.overflow = true;
   }
 
-  resetHand(cards: Card[]) {
-    this.cards = [...cards];
+  stand() {
+    if (!this.split) {
+      this.standed = true;
+    } else {
+      if (this.splitSecondRound) { 
+        this.standed = true;
+        return;
+      }
+      const temp = [...this.cards];
+      this.cards = [...this.splitedCards];
+      this.splitedCards = [...temp];
+      this.splitSecondRound = true;
+      this.splitOverflow = this.overflow;
+      this.overflow = false;
+    }
   }
 
-  stand() {
-    this.standed = true;
+  isSplitPossible(): boolean {
+    if (this.cards.length !== 2) return false;
+
+    return getCardScore(this.cards[0].name) === getCardScore(this.cards[1].name);
+  }
+
+  nextRound(cards: Card[]) {
+    this.overflow = false;
+    this.standed = false;
+    this.split = false;
+    this.splitSecondRound = false;
+    this.splitedCards = [];
+    this.cards = [];
+    this.splitOverflow = false;
+    this.resetHand(cards);
+  }
+
+  playSplit(firstMissing: Card, secondMissing: Card) {
+    this.split = true;
+    this.cards = [this.cards[0], firstMissing];
+    this.splitedCards = [this.cards[1], secondMissing];
   }
 }
