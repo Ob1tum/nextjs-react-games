@@ -38,6 +38,7 @@ export default class Game {
     return this.getCopy();
   }
 
+  // method for rerender GameComponent (new object in state = rerender)
   updateGame(): Game {
     return this.getCopy();
   }

@@ -13,7 +13,6 @@ export default class Player {
   private splitSecondRound = false;
   splitedCards: Card[] = [];
   split: boolean = false;
-  splitBet: number = 25;
   splitOverflow: boolean = false;
 
   constructor(hand: Card[]) {
@@ -81,9 +80,13 @@ export default class Player {
     this.resetHand(cards);
   }
 
-  playSplit(firstMissing: Card, secondMissing: Card) {
+  splitHand(firstMissing: Card, secondMissing: Card) {
     this.split = true;
     this.cards = [this.cards[0], firstMissing];
     this.splitedCards = [this.cards[1], secondMissing];
+  }
+
+  changeBet(amount: number) {
+    this.bet = amount;
   }
 }

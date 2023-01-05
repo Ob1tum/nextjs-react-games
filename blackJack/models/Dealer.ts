@@ -1,3 +1,4 @@
+import Deck from "./Deck";
 import Game from "./Game";
 import Player from "./Player";
 
@@ -10,6 +11,8 @@ export default class Dealer extends Player {
   }
 
   private getCoefficientByScore(score: number): number {
+    if (this.overflow) return 1;
+
     let coefficient = 0;
     const dealerScore = this.getScore();
     if (score > dealerScore) coefficient += 1;
@@ -33,13 +36,33 @@ export default class Dealer extends Player {
     return coefficient;
   }
 
-  startPlay({ players }: Game) {
-    // TODO: start this method, when all players stand
-    // this logic decides whether to take a card or not
+  private fillHand1vs1(player: Player, deck: Deck) {
+    const { split, overflow, splitOverflow } = player;
+    const score = player.getScore();
+    if (split) {
 
-    // code here...
+    } else {
+      if (overflow) return;
 
-    // end of this method
+      while (this.getScore() < score) {
+        this.takeCard(deck.getNextCard());
+      }
+    }
+    if (this.getScore() > 21) this.overflow = true;
+  }
+
+  private fillHand(players: Player[], deck: Deck) {
+    if (players.length === 1) {
+      const player = players[0];
+      this.fillHand1vs1(player, deck);
+    } else {
+      // TODO: think about
+    }
+  }
+
+  startPlay({ players, deck }: Game) {
+    this.fillHand(players, deck);
+
     const result: { [key: number]: number } = {};
     for (let i = 0; i < players.length; i++) {
       const player = players[i];

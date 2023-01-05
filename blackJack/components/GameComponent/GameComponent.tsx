@@ -39,38 +39,39 @@ const GameComponent: FC = () => {
     }, 2000);
   }
 
-  const playerSplit = (player: Player) => {
+  const splitPlayerHand = (player: Player) => {
     if (!player.isSplitPossible()) return;
-    player.playSplit(deck.getNextCard(), deck.getNextCard());
+    player.splitHand(deck.getNextCard(), deck.getNextCard());
     setGame(game.updateGame());
   }
 
+  // dont forget about keys for iterable elements
   const players = game.players.map((p) => (
     <>
-    <div className={classes.PlayerInfo}>
-      <div>balance: {p.balance}</div>
-      {p.cards.map((c) => (
-        <div className={classes.Card}>
-          <div>suit: {c.suit}</div>
-          <div>name: {c.name}</div>
-        </div>
-      ))}
-      <div>score: {p.getScore()}</div>
-      {!roundFinished && <button type="button" onClick={() => addCardToPlayer(p)}>hit</button>}
-      {!roundFinished && <button type="button" onClick={() => standPlayerHand(p)}>stand</button>}
-      {!roundFinished && !p.split && p.isSplitPossible() && <button type="button" onClick={() => playerSplit(p)}>split</button>}
-    </div>
-    {p.split && 
-      <div>
-        {p.splitedCards.map((c) => (
+      <div className={classes.PlayerInfo}>
+        <div>balance: {p.balance}</div>
+        {p.cards.map((c) => (
           <div className={classes.Card}>
             <div>suit: {c.suit}</div>
             <div>name: {c.name}</div>
           </div>
         ))}
+        <div>score: {p.getScore()}</div>
+        {!roundFinished && <button type="button" onClick={() => addCardToPlayer(p)}>hit</button>}
+        {!roundFinished && <button type="button" onClick={() => standPlayerHand(p)}>stand</button>}
+        {!roundFinished && !p.split && p.isSplitPossible() && <button type="button" onClick={() => splitPlayerHand(p)}>split</button>}
       </div>
-    }
-  </>
+      {p.split && 
+        <div>
+          {p.splitedCards.map((c) => (
+            <div className={classes.Card}>
+              <div>suit: {c.suit}</div>
+              <div>name: {c.name}</div>
+            </div>
+          ))}
+        </div>
+      }
+    </>
   ));
 
   return (
