@@ -39,8 +39,14 @@ export default class Dealer extends Player {
   private fillHand1vs1(player: Player, deck: Deck) {
     const { split, overflow, splitOverflow } = player;
     const score = player.getScore();
-    if (split) {
 
+    if (split && !splitOverflow) {
+      if (overflow) return;
+
+      const splitedScore = player.getSplitedScore();
+      while (this.getScore() < score && this.getScore() < splitedScore) {
+        this.takeCard(deck.getNextCard());
+      }
     } else {
       if (overflow) return;
 
@@ -48,7 +54,9 @@ export default class Dealer extends Player {
         this.takeCard(deck.getNextCard());
       }
     }
+
     if (this.getScore() > 21) this.overflow = true;
+    console.log(this.getScore());
   }
 
   private fillHand(players: Player[], deck: Deck) {

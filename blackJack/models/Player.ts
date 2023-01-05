@@ -82,8 +82,8 @@ export default class Player {
 
   splitHand(firstMissing: Card, secondMissing: Card) {
     this.split = true;
-    this.cards = [this.cards[0], firstMissing];
     this.splitedCards = [this.cards[1], secondMissing];
+    this.cards = [this.cards[0], firstMissing];
   }
 
   changeBet(amount: number) {
