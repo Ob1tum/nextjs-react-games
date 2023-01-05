@@ -1,0 +1,20 @@
+.Game {
+  background-color: green;
+}
+
+.PlayersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 50px;
+}
+
+.PlayerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.Card {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+}
