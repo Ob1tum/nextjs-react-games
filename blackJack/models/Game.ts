@@ -11,17 +11,33 @@ export default class Game {
     const newGame = new Game();
     newGame.deck = this.deck;
     newGame.players = this.players;
+    newGame.dealer = this.dealer;
     return newGame;
   }
 
   initGame(playersCount: number): Game {
     this.dealer = new Dealer(this.deck.getNextHand());
 
-    for (let i = 1; i < playersCount; i++) {
-      this.players.push(new Player(this.deck.getNextHand()));
+    for (let i = 0; i < playersCount; i++) {
+      const newPlayer = new Player(this.deck.getNextHand());
+      newPlayer.id = i;
+      this.players.push(newPlayer);
     }
 
     return this.updateGame();
+  }
+
+  nextRound(): Game {
+    this.deck = new Deck();
+    for (let i = 0; i < this.players.length; i++) {
+      const player = this.players[i];
+      player.overflow = false;
+      player.standed = false;
+      player.resetHand(this.deck.getNextHand());
+    }
+    this.dealer.resetHand(this.deck.getNextHand());
+
+    return this.getCopy();
   }
 
   updateGame(): Game {

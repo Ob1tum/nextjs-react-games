@@ -5,16 +5,37 @@ import classes from "./GameComponent.module.scss";
 
 const GameComponent: FC = () => {
   const [game, setGame] = useState(new Game());
+  const [roundFinished, setRoundFinished] = useState(false);
 
   useEffect(() => {
-    setGame(game.initGame(2));
+    setGame(game.initGame(1)); // players count
   }, [])
 
-  const { deck } = game;
+  const { deck, dealer } = game;
 
   const addCardToPlayer = (player: Player) => {
     player.takeCard(deck.getNextCard());
+    if (player.overflow) playerStanded(player);
     setGame(game.updateGame());
+  }
+
+  const playerStanded = (player: Player) => {
+    player.stand();
+    const playersInGame = game.players.filter((p) => !p.standed);
+    if (!playersInGame || playersInGame.length === 0) {
+      passTurnToDealer();
+    }
+  }
+
+  const passTurnToDealer = () => {
+    dealer.startPlay(game);
+    setGame(game.updateGame());
+    setRoundFinished(true);
+
+    setTimeout(() => {
+      setGame(game.nextRound());
+      setRoundFinished(false);
+    }, 2000);
   }
 
   const players = game.players.map((p) => (
@@ -27,8 +48,8 @@ const GameComponent: FC = () => {
         </div>
       ))}
       <div>score: {p.getScore()}</div>
-      <button type="button" onClick={() => addCardToPlayer(p)}>hit</button>
-      <button type="button">stand</button>
+      {!roundFinished && <button type="button" onClick={() => addCardToPlayer(p)}>hit</button>}
+      {!roundFinished && <button type="button" onClick={() => playerStanded(p)}>stand</button>}
     </div>
   ));
 

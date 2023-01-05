@@ -2,8 +2,13 @@ import Card from "./Card";
 import { CardName } from "./CardName";
 
 export default class Player {
+  id: number;
   balance: number = 1000;
   cards: Card[] = [];
+
+  bet: number = 25;
+  standed: boolean = false;
+  overflow: boolean = false;
 
   constructor(hand: Card[]) {
     this.cards.push(...hand);
@@ -54,5 +59,14 @@ export default class Player {
 
   takeCard(card: Card) {
     this.cards.push(card);
+    if (this.getScore() > 21) this.overflow = true;
+  }
+
+  resetHand(cards: Card[]) {
+    this.cards = [...cards];
+  }
+
+  stand() {
+    this.standed = true;
   }
 }
