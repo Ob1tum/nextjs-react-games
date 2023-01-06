@@ -1,6 +1,7 @@
-import { NextPage } from "next";
-import HomeComponent from "../../../../blackJack/components/Home/HomeComponent";
+import { NextPage } from 'next';
 
-const BlackJack: NextPage = () => <HomeComponent />
+import HomeComponent from '../../../../blackJack/components/Home/HomeComponent';
+
+const BlackJack: NextPage = () => <HomeComponent />;
 
 export default BlackJack;

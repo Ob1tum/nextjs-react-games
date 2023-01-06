@@ -36,36 +36,38 @@ export default class Dealer extends Player {
     return coefficient;
   }
 
-  private fillHand1vs1(player: Player, deck: Deck) {
-    const { split, overflow, splitOverflow } = player;
-    const score = player.getScore();
+  private findAverageHand(players: Player[]): number {
+    const scoreArr: number[] = [];
 
-    if (split && !splitOverflow) {
-      if (overflow) return;
+    for (let i = 0; i < players.length; i++) {
+      const player = players[i];
+      const { split, overflow, splitOverflow } = player;
 
-      const splitedScore = player.getSplitedScore();
-      while (this.getScore() < score && this.getScore() < splitedScore) {
-        this.takeCard(deck.getNextCard());
-      }
-    } else {
-      if (overflow) return;
+      const score = player.getScore();
 
-      while (this.getScore() < score) {
-        this.takeCard(deck.getNextCard());
+      if (split && !splitOverflow) {
+        if (overflow) continue;
+  
+        const splitedScore = player.getSplitedScore();
+        scoreArr.push(score, splitedScore)
+      } else {
+        if (overflow) continue;
+
+        scoreArr.push(score);
       }
     }
 
-    if (this.getScore() > 21) this.overflow = true;
-    console.log(this.getScore());
+    return scoreArr.length ? scoreArr[Math.ceil(scoreArr.length / 2)] : 0;
   }
 
   private fillHand(players: Player[], deck: Deck) {
-    if (players.length === 1) {
-      const player = players[0];
-      this.fillHand1vs1(player, deck);
-    } else {
-      // TODO: think about
+    const avgHand = this.findAverageHand(players);
+
+    while (this.getScore() < avgHand) {
+      this.takeCard(deck.getNextCard());
     }
+
+    if (this.getScore() > 21) this.overflow = true;
   }
 
   startPlay({ players, deck }: Game) {

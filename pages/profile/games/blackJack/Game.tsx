@@ -1,6 +1,7 @@
-import { NextPage } from "next";
-import GameComponent from "../../../../blackJack/components/GameComponent/GameComponent";
+import { NextPage } from 'next';
 
-const Game: NextPage = () => <GameComponent />
+import GameComponent from '../../../../blackJack/components/GameComponent/GameComponent';
+
+const Game: NextPage = () => <GameComponent />;
 
 export default Game;
