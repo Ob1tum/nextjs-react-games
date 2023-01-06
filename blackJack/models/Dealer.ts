@@ -52,6 +52,7 @@ export default class Dealer extends Player {
       const { split, overflow, splitOverflow } = player;
 
       const score = player.getScore();
+<<<<<<< HEAD
 
       if (split && !splitOverflow) {
         if (overflow) continue;
@@ -72,6 +73,31 @@ export default class Dealer extends Player {
       this.takeCard(deck.getNextCard());
     }
 
+=======
+
+      if (split && !splitOverflow) {
+        if (overflow) continue;
+  
+        const splitedScore = player.getSplitedScore();
+        scoreArr.push(score, splitedScore)
+      } else {
+        if (overflow) continue;
+
+        scoreArr.push(score);
+      }
+    }
+
+    return scoreArr.length ? scoreArr[Math.ceil(scoreArr.length / 2)] : 0;
+  }
+
+  private fillHand(players: Player[], deck: Deck) {
+    const avgHand = this.findAverageHand(players);
+
+    while (this.getScore() < avgHand) {
+      this.takeCard(deck.getNextCard());
+    }
+
+>>>>>>> c9c8a23a (Minor refactoring + rewriten dealer algorithm)
     if (this.getScore() > 21) this.overflow = true;
   }
 
