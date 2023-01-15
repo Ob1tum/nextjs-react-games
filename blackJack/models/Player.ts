@@ -1,19 +1,28 @@
-import Card from "./Card";
-import { getCardScore } from "./CardName";
+import Card from './Card';
+import { getCardScore } from './CardName';
 
 export default class Player {
   id: number;
-  balance: number = 1000;
+
+  balance = 1000;
+
   cards: Card[] = [];
 
-  bet: number = 25;
-  standed: boolean = false;
-  overflow: boolean = false;
+  bet = 25;
+
+  standed = false;
+
+  overflow = false;
 
   private splitSecondRound = false;
+
   splitedCards: Card[] = [];
-  split: boolean = false;
-  splitOverflow: boolean = false;
+
+  split = false;
+
+  splitOverflow = false;
+
+  double = false;
 
   constructor(hand: Card[]) {
     this.cards.push(...hand);
@@ -50,7 +59,7 @@ export default class Player {
     if (!this.split) {
       this.standed = true;
     } else {
-      if (this.splitSecondRound) { 
+      if (this.splitSecondRound) {
         this.standed = true;
         return;
       }
@@ -77,6 +86,7 @@ export default class Player {
     this.splitedCards = [];
     this.cards = [];
     this.splitOverflow = false;
+    this.double = false;
     this.resetHand(cards);
   }
 
@@ -84,9 +94,5 @@ export default class Player {
     this.split = true;
     this.splitedCards = [this.cards[1], secondMissing];
     this.cards = [this.cards[0], firstMissing];
-  }
-
-  changeBet(amount: number) {
-    this.bet = amount;
   }
 }

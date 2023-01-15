@@ -1,10 +1,12 @@
-import Dealer from "./Dealer";
-import Deck from "./Deck";
-import Player from "./Player";
+import Dealer from './Dealer';
+import Deck from './Deck';
+import Player from './Player';
 
 export default class Game {
   deck: Deck = new Deck();
+
   dealer: Dealer;
+
   players: Player[] = [];
 
   private getCopy(): Game {
@@ -16,7 +18,7 @@ export default class Game {
   }
 
   initGame(playersCount: number): Game {
-    this.dealer = new Dealer(this.deck.getNextHand());
+    this.dealer = new Dealer(this.deck.getDealerHand());
 
     for (let i = 0; i < playersCount; i++) {
       const newPlayer = new Player(this.deck.getNextHand());
@@ -33,7 +35,7 @@ export default class Game {
       const player = this.players[i];
       player.nextRound(this.deck.getNextHand());
     }
-    this.dealer.nextRound(this.deck.getNextHand());
+    this.dealer.nextRound(this.deck.getDealerHand());
 
     return this.getCopy();
   }
@@ -42,5 +44,4 @@ export default class Game {
   updateGame(): Game {
     return this.getCopy();
   }
-
 }

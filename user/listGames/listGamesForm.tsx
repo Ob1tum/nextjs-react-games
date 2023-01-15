@@ -10,6 +10,7 @@ import chessIcon from '../img/chessIcon.png';
 import checkersIcon from '../img/checkersIcon.png';
 import hangmanIcon from '../img/hangmanIcon.png';
 import aerohokkeyIcon from '../img/aerohokkeyIcon.png';
+import blackJackIcon from '../img/blackJackIcon.png';
 
 import { GameLink } from './GameLink';
 import { Games, Page, HeaderGames, ListGames } from './listGamesStyle';
@@ -24,7 +25,7 @@ const ListGamesForm = () => {
     { src: checkersIcon.src, title: 'checkers' },
     { src: hangmanIcon.src, title: 'hangman' },
     { src: aerohokkeyIcon.src, title: 'airhockey' },
-    { src: tetrisIcon.src, title: 'blackJack' },
+    { src: blackJackIcon.src, title: 'blackJack' },
   ];
   return (
     <>
@@ -37,7 +38,12 @@ const ListGamesForm = () => {
               <HeaderGames>GAMES</HeaderGames>
               <ListGames>
                 {gameLinksArr.map((item, index) => (
-                  <GameLink key={index} src={item.src} title={item.title} href={`${path}${item.title}`} />
+                  <GameLink
+                    key={index}
+                    src={item.src}
+                    title={item.title}
+                    href={`${path}${item.title}`}
+                  />
                 ))}
               </ListGames>
             </Games>

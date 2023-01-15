@@ -1,12 +1,16 @@
-import Deck from "./Deck";
-import Game from "./Game";
-import Player from "./Player";
+import Deck from './Deck';
+import Game from './Game';
+import Player from './Player';
 
 export default class Dealer extends Player {
   private calcWinnings(players: Player[], roundResults: { [key: number]: number }) {
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
-      player.balance += player.bet * roundResults[player.id]; 
+      if (player.double) {
+        player.balance += player.bet * 2 * roundResults[player.id];
+      } else {
+        player.balance += player.bet * roundResults[player.id];
+      }
     }
   }
 
@@ -47,23 +51,20 @@ export default class Dealer extends Player {
 
       if (split && !splitOverflow) {
         if (overflow) continue;
-  
+
         const splitedScore = player.getSplitedScore();
-        scoreArr.push(score, splitedScore)
+        scoreArr.push(score, splitedScore);
       } else {
         if (overflow) continue;
 
         scoreArr.push(score);
       }
     }
-
-    return scoreArr.length ? scoreArr[Math.ceil(scoreArr.length / 2)] : 0;
+    return scoreArr.length ? scoreArr[Math.floor(scoreArr.length / 2)] : 0;
   }
 
-  private fillHand(players: Player[], deck: Deck) {
-    const avgHand = this.findAverageHand(players);
-
-    while (this.getScore() < avgHand) {
+  private fillHand(deck: Deck) {
+    while (this.getScore() < 17) {
       this.takeCard(deck.getNextCard());
     }
 
@@ -71,7 +72,7 @@ export default class Dealer extends Player {
   }
 
   startPlay({ players, deck }: Game) {
-    this.fillHand(players, deck);
+    this.fillHand(deck);
 
     const result: { [key: number]: number } = {};
     for (let i = 0; i < players.length; i++) {

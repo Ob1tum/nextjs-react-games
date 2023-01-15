@@ -1,14 +1,16 @@
-import { getNumericEnumValues } from "../helpers/EnumHelper";
-import { CardName } from "./CardName";
-import { CardSuit } from "./CardSuit";
-import Card from "./Card";
+import { getNumericEnumValues, getStringEnumValues } from '../helpers/EnumHelper';
+
+import { CardName } from './CardName';
+import { CardSuit } from './CardSuit';
+import Card from './Card';
 
 export default class Deck {
   private pointer = 0;
+
   private cards: Card[] = [];
 
   constructor() {
-    const suits = getNumericEnumValues(CardSuit);
+    const suits = getStringEnumValues(CardSuit);
     const names = getNumericEnumValues(CardName);
 
     for (let i = 0; i < suits.length; i++) {
@@ -36,11 +38,16 @@ export default class Deck {
   getNextCard(): Card {
     return this.cards[this.pointer++];
   }
-  
+
   getNextHand(): Card[] {
     const hand = [this.cards[this.pointer], this.cards[this.pointer + 1]];
     this.pointer += 2;
     return hand;
   }
 
+  getDealerHand() {
+    const hand = [{ name: 0, suit: 'cardback' }, this.cards[this.pointer]];
+    this.pointer += 2;
+    return hand;
+  }
 }

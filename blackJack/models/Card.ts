@@ -1,9 +1,10 @@
-import { CardName } from "./CardName";
-import { CardSuit } from "./CardSuit";
+import { CardName } from './CardName';
+import { CardSuit } from './CardSuit';
 
 export default class Card {
-  name: CardName;
-  suit: CardSuit;
+  name: CardName | number;
+
+  suit: CardSuit | string;
 
   constructor(name: CardName, suit: CardSuit) {
     this.name = name;

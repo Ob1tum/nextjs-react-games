@@ -1,4 +1,5 @@
 export enum CardName {
+  ACE = 1,
   TWO = 2,
   THREE = 3,
   FOUR = 4,
@@ -8,10 +9,9 @@ export enum CardName {
   EIGHT = 8,
   NINE = 9,
   TEN = 10,
-  ACE = 11,
-  JACK = 12,
-  QUEEN = 13,
-  KING = 14,
+  JACK = 11,
+  QUEEN = 12,
+  KING = 13,
 }
 
 export const getCardScore = (card: CardName): number => {
@@ -52,4 +52,4 @@ export const getCardScore = (card: CardName): number => {
       break;
   }
   return score;
-}
+};
