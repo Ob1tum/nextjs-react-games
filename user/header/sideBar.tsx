@@ -35,6 +35,11 @@ const SideBar = () => {
         <Li>News</Li>
         <Li>Store</Li>
         <LiHeader>Games</LiHeader>
+        <StyledLink href={`${path}${pathGames}/saper`} passHref>
+          <Li pathname="saper" active={router.pathname}>
+            saper
+          </Li>
+        </StyledLink>
         <StyledLink href={`${path}${pathGames}/chess`} passHref>
           <Li pathname="chess" active={router.pathname}>
             Chess

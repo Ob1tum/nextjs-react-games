@@ -4,6 +4,7 @@ import hangmanReducer from '../hangman/store/HangmanSlice';
 import checkersReducer from '../checkers/store/checkersReducer';
 import tetrisSlice from '../tetris2/store/tetrisSlice';
 import DataSlice from '../chess/dataSlice/DataSlice';
+import saperSlice from '../pages/profile/games/saper/store/saperSlice'
 import { storeSolitaire } from '../solitaire/store/store';
 
 import user from './userSlice';
@@ -15,6 +16,7 @@ export const store = configureStore({
     checkers: checkersReducer,
     tetris: tetrisSlice,
     rootSlice: DataSlice,
+    saperSlice: saperSlice,
     solitaire: storeSolitaire,
   },
   middleware(getDefaultMiddleware) {
