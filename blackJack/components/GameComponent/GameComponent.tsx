@@ -18,7 +18,16 @@ import {
   Balance,
   Bank,
   Bet,
+  Score,
+  Win,
+  Lose,
+  ResultWrapper,
 } from './index';
+
+type SingleCard = {
+  name: number;
+  suit: string;
+};
 
 const GameComponent: FC = () => {
   const [game, setGame] = useState(new Game());
@@ -30,8 +39,6 @@ const GameComponent: FC = () => {
   }, []);
 
   const { deck, dealer } = game;
-
-  console.log(dealer);
 
   const passTurnToDealer = () => {
     dealer.startPlay(game);
@@ -76,54 +83,37 @@ const GameComponent: FC = () => {
     setGame(game.updateGame());
   };
 
+  const showCards = (cards: SingleCard[]) =>
+    cards.map((c, index) => (
+      <Card zInd={index} key={uuidv4()}>
+        <Image src={indicateCardPic(c.name, c.suit)} layout="fill" />
+      </Card>
+    ));
+
   const fullDealerHand = dealer && [...dealer.cards].slice(1);
 
   const dealerInfo = dealer && (
     <PlayerInfo>
-      <HandWrapper>
-        {!isDealerTurn
-          ? dealer.cards.map((c, index) => (
-              <Card zInd={index} key={uuidv4()}>
-                <div style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                  <Image src={indicateCardPic(c.name, c.suit)} width="180" height="270" />
-                </div>
-              </Card>
-            ))
-          : fullDealerHand.map((c, index) => (
-              <Card zInd={index} key={uuidv4()}>
-                <div style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                  <Image src={indicateCardPic(c.name, c.suit)} width="180" height="270" />
-                </div>
-              </Card>
-            ))}
-      </HandWrapper>
-      <div>СЧЁТ: {dealer.getScore()}</div>
+      <CardsWrapper>
+        <Score>{dealer.getScore()}</Score>
+        <HandWrapper>
+          {!isDealerTurn ? showCards(dealer.cards) : showCards(fullDealerHand)}
+        </HandWrapper>
+      </CardsWrapper>
     </PlayerInfo>
   );
   const players = game.players.map((p) => (
     <PlayerInfo key={uuidv4()}>
-      <div>СЧЁТ: {p.getScore()}</div>
+      <ResultWrapper>
+        {p.won && !p.blackjack && <Win>ВЫ ПОБЕДИЛИ</Win>}
+        {p.lose && <Lose>ВЫ ПРОИГРАЛИ</Lose>}
+        {p.blackjack && <Win>BLACKJACK</Win>}
+      </ResultWrapper>
+
       <CardsWrapper>
-        <HandWrapper>
-          {p.cards.map((c, index) => (
-            <Card zInd={index} key={uuidv4()}>
-              <div style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                <Image src={indicateCardPic(c.name, c.suit)} width="180" height="270" />
-              </div>
-            </Card>
-          ))}
-        </HandWrapper>
-        {p.split && (
-          <HandWrapper>
-            {p.splitedCards.map((c, index) => (
-              <Card zInd={index} key={uuidv4()}>
-                <div style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                  <Image src={indicateCardPic(c.name, c.suit)} width="180" height="270" />
-                </div>
-              </Card>
-            ))}
-          </HandWrapper>
-        )}
+        <Score>{p.getScore()}</Score>
+        <HandWrapper>{showCards(p.cards)}</HandWrapper>
+        {p.split && <HandWrapper>{showCards(p.splitedCards)}</HandWrapper>}
       </CardsWrapper>
       <ButtonsWrapper>
         <Button onClick={() => !roundFinished && addCardToPlayer(p)}>ЕЩЁ</Button>

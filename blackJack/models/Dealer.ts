@@ -6,6 +6,8 @@ export default class Dealer extends Player {
   private calcWinnings(players: Player[], roundResults: { [key: number]: number }) {
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
+      if (roundResults[player.id] > 0) player.won = true;
+      if (roundResults[player.id] < 0) player.lose = true;
       if (player.double) {
         player.balance += player.bet * 2 * roundResults[player.id];
       } else {
@@ -30,7 +32,9 @@ export default class Dealer extends Player {
     let coefficient = 0;
 
     if (overflow) coefficient -= 1;
-    else coefficient += this.getCoefficientByScore(player.getScore());
+    else {
+      coefficient += this.getCoefficientByScore(player.getScore());
+    }
 
     if (split) {
       if (splitOverflow) coefficient -= 1;

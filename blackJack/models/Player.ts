@@ -24,6 +24,12 @@ export default class Player {
 
   double = false;
 
+  blackjack = false;
+
+  won = false;
+
+  lose = false;
+
   constructor(hand: Card[]) {
     this.cards.push(...hand);
   }
@@ -48,6 +54,7 @@ export default class Player {
 
   private resetHand(cards: Card[]) {
     this.cards = [...cards];
+    this.isBlackJack();
   }
 
   takeCard(card: Card) {
@@ -78,6 +85,18 @@ export default class Player {
     return getCardScore(this.cards[0].name) === getCardScore(this.cards[1].name);
   }
 
+  isBlackJack(): boolean {
+    if (this.cards.length !== 2) return false;
+    if (
+      (this.cards[0].name === 1 && this.cards[1].name > 9) ||
+      (this.cards[0].name > 9 && this.cards[1].name === 1)
+    ) {
+      this.blackjack = true;
+      this.getScore();
+    }
+    return this.blackjack;
+  }
+
   nextRound(cards: Card[]) {
     this.overflow = false;
     this.standed = false;
@@ -87,6 +106,9 @@ export default class Player {
     this.cards = [];
     this.splitOverflow = false;
     this.double = false;
+    this.blackjack = false;
+    this.won = false;
+    this.lose = false;
     this.resetHand(cards);
   }
 

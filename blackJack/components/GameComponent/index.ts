@@ -37,23 +37,63 @@ export const CardsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 20px 0;
+  margin: 40px 0;
+  position: relative;
+  height: 200px;
+  width: 70%;
+`;
+export const Score = styled.div`
+  border-radius: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  padding-top: 10px;
+  padding-left: 5px;
+  position: absolute;
+  top: 80px;
+  left: 200px;
+  text-border: 1px solid #36e78f;
+`;
+export const ResultWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  letter-spacing: 2px;
+`;
+export const Win = styled.div`
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  box-shadow: inset rgba(255, 255, 255, 0.5) 1px 1px;
+  margin-top: 10px;
+  width: 30%;
+  padding: 3px;
+`;
+export const Lose = styled.div`
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  box-shadow: inset rgba(255, 255, 255, 0.5) 1px 1px;
+  margin-top: 10px;
+  width: 30%;
+  padding: 3px;
 `;
 export const HandWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  margin: 20px 0;
+  justify-content: start;
+  margin: 10px 0;
+  position: relative;
 `;
 export const Card = styled.div`
   border-radius: 10px;
   width: 140px;
-  min-width: 120px;
-  height: 210px;
+  height: 220px;
   z-index: ${(props) => props.zInd};
-  position: relative;
-  left: -${(props) => props.zInd * 50}px;
-  transform: rotate(-3deg);
+  position: absolute;
+  left: ${(props) => props.zInd * 80}px;
+  transform: rotate(4deg);
   &:first-child {
     left: 0px;
   }
