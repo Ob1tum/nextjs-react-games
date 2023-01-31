@@ -85,7 +85,7 @@ const GameComponent: FC = () => {
 
   const showCards = (cards: SingleCard[]) =>
     cards.map((c, index) => (
-      <Card zInd={index} key={uuidv4()}>
+      <Card style={{ zIndex: index, left: `${index * 80}px` }} key={uuidv4()}>
         <Image src={indicateCardPic(c.name, c.suit)} layout="fill" />
       </Card>
     ));

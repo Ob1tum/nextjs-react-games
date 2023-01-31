@@ -90,9 +90,7 @@ export const Card = styled.div`
   border-radius: 10px;
   width: 140px;
   height: 220px;
-  z-index: ${(props) => props.zInd};
   position: absolute;
-  left: ${(props) => props.zInd * 80}px;
   transform: rotate(4deg);
   &:first-child {
     left: 0px;
