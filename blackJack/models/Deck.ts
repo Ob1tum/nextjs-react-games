@@ -12,7 +12,6 @@ export default class Deck {
   constructor() {
     const suits = getStringEnumValues(CardSuit);
     const names = getNumericEnumValues(CardName);
-    console.log(suits, names);
     for (let i = 0; i < suits.length; i++) {
       for (let j = 0; j < names.length; j++) {
         this.cards.push(new Card(names[j], suits[i]));
