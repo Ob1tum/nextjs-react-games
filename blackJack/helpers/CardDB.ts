@@ -52,16 +52,14 @@ import spades11 from '../assets/images/cards/spades/v.png';
 import spades12 from '../assets/images/cards/spades/q.png';
 import spades13 from '../assets/images/cards/spades/k.png';
 
-type CurrCard = [
-  {
-    id: number;
-    nameCard: number;
-    suit: string;
-    img: string;
-  },
-];
+type CurrCard = {
+  id: number;
+  nameCard: number;
+  suit: string;
+  img: string;
+};
 
-export const cardDB = [
+export const cardDB: CurrCard[] = [
   { id: 1, nameCard: 1, suit: 'clubs', img: clubs1.src },
   { id: 2, nameCard: 2, suit: 'clubs', img: clubs2.src },
   { id: 3, nameCard: 3, suit: 'clubs', img: clubs3.src },
@@ -118,6 +116,6 @@ export const cardDB = [
 ];
 
 export const indicateCardPic = (name: number, suit: string) => {
-  const currCard: CurrCard = cardDB.filter((el) => el.nameCard === name && el.suit === suit);
-  return currCard[0].img;
+  const currCard: CurrCard = cardDB.filter((el) => el.nameCard === name && el.suit === suit)[0];
+  return currCard.img;
 };

@@ -12,7 +12,7 @@ export default class Deck {
   constructor() {
     const suits = getStringEnumValues(CardSuit);
     const names = getNumericEnumValues(CardName);
-
+    console.log(suits, names);
     for (let i = 0; i < suits.length; i++) {
       for (let j = 0; j < names.length; j++) {
         this.cards.push(new Card(names[j], suits[i]));
@@ -25,6 +25,7 @@ export default class Deck {
   private mixCards() {
     for (let i = 0; i < this.cards.length; i++) {
       const rnd = Math.floor(Math.random() * 52);
+      // eslint-disable-next-line no-continue
       if (rnd === i) continue;
       else {
         const prev = this.cards[rnd];
