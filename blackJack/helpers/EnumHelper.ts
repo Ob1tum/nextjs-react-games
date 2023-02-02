@@ -4,7 +4,7 @@ export const getNumericEnumValues = <T>(someEnum: T): number[] =>
     return acc;
   }, []);
 
-export const getStringEnumValues = <T>(someEnum: T): string[] =>
+export const getStringEnumValues = <T>(someEnum: T) =>
   Object.values(someEnum).reduce((acc, item) => {
     acc.push(item);
     return acc;
