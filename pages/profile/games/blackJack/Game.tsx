@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import React from 'react';
 
 import GameComponent from '../../../../blackJack/components/GameComponent/GameComponent';
 

@@ -38,7 +38,7 @@ const rulesSecond = [
     то дилер всегда предложит удвоить ставку игрока.`,
 ];
 
-const HomeComponent: FC = () => {
+const RulesComponent: FC = () => {
   const [isFirstPage, setToFirstPage] = useState(true);
   const rules = isFirstPage ? rulesFirst : rulesSecond;
   return (
@@ -64,4 +64,4 @@ const HomeComponent: FC = () => {
   );
 };
 
-export default HomeComponent;
+export default RulesComponent;

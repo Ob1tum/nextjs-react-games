@@ -1,7 +1,8 @@
 import { NextPage } from 'next';
+import React from 'react';
 
 import RulesComponent from '../../../../blackJack/components/Rules/RulesComponent';
 
-const Game: NextPage = () => <RulesComponent />;
+const Rules: NextPage = () => <RulesComponent />;
 
-export default Game;
+export default Rules;
