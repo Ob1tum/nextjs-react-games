@@ -7,14 +7,17 @@ export const MessageContainer = styled.div`
   border: none;
   padding: 5px 10px;
   color: black;
-  margin-bottom: 10px;
+  &:last-child {
+    scroll-snap-align: end;
+  }
 `;
 export const MessageText = styled.div`
   max-width: 400px;
   border: none;
   padding: 10px 10px;
   border-radius: 25px;
-  background: rgba(244, 97, 25, 0.3);
+  background: #e43603;
+  box-shadow: 0 4px 15px 0 rgb(229 66 10 / 35%);
   color: black;
   margin-bottom: 2px;
 `;
@@ -29,6 +32,7 @@ export const MessageDate = styled.div`
   padding-right: 5px;
 `;
 export const MessageRead = styled.div`
+  position: relative;
   color: black;
-  font-size: 15px;
+  top: -5px;
 `;

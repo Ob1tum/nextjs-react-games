@@ -34,7 +34,9 @@ export const FullChat = styled.div`
   flex-direction: column;
   padding: 20px;
   height: 85%;
-  overflow-x: hidden;
+  overflow-y: scroll;
+  // overscroll-behavior-y: none;
+  scroll-snap-type: y proximity;
 `;
 export const SentMessage = styled.div`
   display: flex;
@@ -49,10 +51,13 @@ export const InputMessage = styled.textarea`
   outline: none;
   width: 800px;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 10px 0px 10px;
   border-radius: 25px;
   background: #f5f5f5;
   color: black;
+  ::placeholder {
+    transform: translateY(0.1em);
+  }
 `;
 export const SendButton = styled.button`
   color: #ffffff;

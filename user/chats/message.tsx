@@ -8,13 +8,23 @@ import {
 
 const Message = (props: any) => (
   <>
-    <MessageContainer style={{ marginLeft: 'auto' }}>
-      <MessageText style={{ backgroundColor: 'rgba(244, 97, 25, 0.8)' }}>
-        {props.message.text}
+    <MessageContainer style={{ marginLeft: `${props.author === 'me' ? 'auto' : null}` }}>
+      <MessageText
+        style={{
+          backgroundColor: `${
+            props.author === 'me' ? 'rgba(244, 97, 25, 0.7)' : 'rgba(244, 97, 25, 0.4)'
+          }`,
+        }}
+      >
+        {props.text}
       </MessageText>
       <MessageInfo>
-        <MessageDate>10:00 AM</MessageDate>
-        <MessageRead>++</MessageRead>
+        <MessageDate>{props.date}</MessageDate>
+        <MessageRead
+          style={{ color: `${props.readStatus === 'read' ? 'rgba(244, 97, 25, 0.8)' : 'grey'}` }}
+        >
+          ✔
+        </MessageRead>
       </MessageInfo>
     </MessageContainer>
   </>

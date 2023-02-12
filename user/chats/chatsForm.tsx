@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'next/router';
-
 import Header from '../header/header';
 import SideBar from '../header/sideBar';
 import { FooterBar } from '../footer/footer';
@@ -20,8 +19,83 @@ import {
 } from './chatsFormStyle';
 
 const ChatsForm = () => {
-  let message = {
-    text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officiis excepturi nostrum tenetur, obcaecati minus laborum quibusdam amet natus quae velit ad neque quod necessitatibus temporibus quidem voluptatibus ex et eligendi.',
+  let messagesArr = [
+    {
+      id: '1',
+      author: 'me',
+      text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.',
+      readStatus: 'read',
+      date: '10:00 AM',
+    },
+    {
+      id: '2',
+      author: 'user',
+      text: 'Lorem ipsum!!!!!!!!!!!😀😀😀',
+      readStatus: 'read',
+      date: '10:10 AM',
+    },
+    {
+      id: '3',
+      author: 'me',
+      text: 'Lorem ipsum dolor sit amet❤️❤️❤️❤️',
+      readStatus: 'read',
+      date: '10:11 AM',
+    },
+    {
+      id: '4',
+      author: 'user',
+      text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.',
+      readStatus: 'unread',
+      date: '11:00 AM',
+    },
+    {
+      id: '5',
+      author: 'user',
+      text: 'Lorem!!!!!!!!!!!............',
+      readStatus: 'unread',
+      date: '11:01 AM',
+    },
+    {
+      id: '6',
+      author: 'user',
+      text: 'Lorem',
+      readStatus: 'unread',
+      date: '11:01 AM',
+    },
+  ];
+
+  let [messages, setMessages] = useState(messagesArr);
+  let [inputMessage, setInputMessage] = useState('');
+
+  let testMessages = messages.map((message) => {
+    return (
+      <Message
+        key={message.id}
+        author={message.author}
+        text={message.text}
+        readStatus={message.readStatus}
+        date={message.date}
+      />
+    );
+  });
+
+  let sendMessage = (value: string) => {
+    let newMessage = {
+      id: '7',
+      author: 'me',
+      text: value,
+      readStatus: 'unread',
+      date: '12:00 AM',
+    };
+    setMessages([...messages, newMessage]);
+    setInputMessage('');
+  };
+
+  let onEnter = (event: any) => {
+    if (event.key === 'Enter' && inputMessage.length > 0) {
+      sendMessage(inputMessage);
+      event.preventDefault();
+    }
   };
 
   return (
@@ -51,16 +125,15 @@ const ChatsForm = () => {
             </Friend>
             <Chat>
               <SelectFriend>Тут будет выбранный друг</SelectFriend>
-              <FullChat>
-                <Message message={message} />
-                <Message message={message} />
-                <Message message={message} />
-                <Message message={message} />
-                <Message message={message} />
-              </FullChat>
+              <FullChat>{testMessages}</FullChat>
               <SentMessage>
-                <InputMessage placeholder="Type a message" />
-                <SendButton>Send</SendButton>
+                <InputMessage
+                  value={inputMessage}
+                  placeholder="Type a message"
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyDown={(e) => onEnter(e)}
+                />
+                <SendButton onClick={() => sendMessage(inputMessage)}>Send</SendButton>
               </SentMessage>
             </Chat>
           </Page>
