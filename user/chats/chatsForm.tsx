@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'next/router';
 import Header from '../header/header';
 import SideBar from '../header/sideBar';
@@ -17,8 +17,17 @@ import {
   InputMessage,
   SendButton,
 } from './chatsFormStyle';
+import ChatService from './chatService';
+
+let service = new ChatService();
 
 const ChatsForm = () => {
+  console.log('Chat test');
+  useEffect(() => {
+    console.log('useEffect');
+    service.start();
+  }, []);
+
   let messagesArr = [
     {
       id: '1',
@@ -51,14 +60,14 @@ const ChatsForm = () => {
     {
       id: '5',
       author: 'user',
-      text: 'Lorem!!!!!!!!!!!............',
+      text: 'Lorem!!!!!!!!!!!',
       readStatus: 'unread',
       date: '11:01 AM',
     },
     {
       id: '6',
       author: 'user',
-      text: 'Lorem',
+      text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.',
       readStatus: 'unread',
       date: '11:01 AM',
     },
@@ -89,6 +98,7 @@ const ChatsForm = () => {
     };
     setMessages([...messages, newMessage]);
     setInputMessage('');
+    service.emit(newMessage);
   };
 
   let onEnter = (event: any) => {
