@@ -14,11 +14,18 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "strictNullChecks":false
+    "strictNullChecks": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.tsx", "pages/_app.tsx", "async-pages/_app.jsx",
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/_document.tsx",
+    "pages/_app.tsx",
+    "async-pages/_app.jsx",
     "src/store/userSlice",
-    "src/store/userSlice"
+    "src/store/userSlice",
+    "__tests__/game2048/game2048.test.js"
   ],
   "exclude": ["node_modules"]
 }
