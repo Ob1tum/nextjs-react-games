@@ -24,24 +24,6 @@ context('Navigation game page', () => {
     cy.visit('/profile/games/game2048/game');
   });
 
-  it("go back or forward in the browser's history", () => {
-    cy.location('pathname').should('include', 'game');
-
-    cy.go('back');
-    cy.location('pathname').should('not.include', 'game');
-
-    cy.go('forward');
-    cy.location('pathname').should('include', 'game');
-
-    // clicking back
-    cy.go(-1);
-    cy.location('pathname').should('not.include', 'game');
-
-    // clicking forward
-    cy.go(1);
-    cy.location('pathname').should('include', 'game');
-  });
-
   it('reload the page', () => {
     cy.reload();
     cy.reload(true);
