@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "jest && start-server-and-test dev http://localhost:3000 cypress && next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "jest",
     "test:cypress": "start-server-and-test dev http://localhost:3000 cypress",
-    "cypress": "cypress open"
+    "cypress": "cypress run"
   },
   "dependencies": {
     "@react-spring/web": "^9.6.1",
