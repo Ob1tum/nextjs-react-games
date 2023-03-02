@@ -5,8 +5,8 @@ export const DivSideBar = styled.div`
   display: block;
   z-index: 888;
   position: fixed;
-  top: 65px;
-  width: 202px;
+  top: 0px;
+  width: 218px;
   height: calc(100vh - 65px);
   padding: 10px 32px 20px 0;
   border-right: 1px solid #f2f2f2;
@@ -16,7 +16,6 @@ export const DivSideBar = styled.div`
 export const Ul = styled.ul`
   list-style: none;
   padding: 0;
-
   border-bottom: 1px solid #e4e7eb;
 `;
 export const LiHeader = styled.li`
@@ -42,7 +41,8 @@ export const StyledLink = styled(Link)`
 `;
 
 export const Li = styled.li<StyledLinkProps>`
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
   text-decoration: none;
   cursor: pointer;
   padding: 9px 0 10px 30px;
@@ -50,11 +50,11 @@ export const Li = styled.li<StyledLinkProps>`
   border-bottom-right-radius: 30px;
   :hover {
     background: rgba(244, 97, 25, 0.05);
-    color: #f46119;
+    color: #3a36db;
   }
   color: ${(props) =>
     (props.active ? props.active.replace('/', '') : '') === props.pathname
-      ? '#F46119'
+      ? '#3a36db'
       : 'rgba(0, 0, 0, 0.66)'};
   background: ${(props) =>
     (props.active ? props.active.replace('/', '') : '') === props.pathname
