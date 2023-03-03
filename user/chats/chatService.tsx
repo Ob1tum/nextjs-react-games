@@ -1,7 +1,15 @@
 import { io } from 'socket.io-client';
 
+let token =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxQHEucSIsImlhdCI6MTY3NzgxNTYzNCwiZXhwIjoxNjc3OTAyMDM0fQ.omxxJlRa_K1blICsG1rePG9a8JQFmShPb44gUGbAfp5hJ303BQPuYTKyv34o7J28R6f2tLLmTpCrUTFQem7mEg';
+
 export default class ChatService {
-  socket = io('http://localhost:3010');
+  socket = io('ws://91.241.64.78:8088/ws', {
+    extraHeaders: {
+      'Access-Control-Allow-Origin': '*',
+      Authorization: `Bearer ${token}`,
+    },
+  });
   start = () => {
     console.log('Connecting to websocket');
 

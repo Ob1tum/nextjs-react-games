@@ -18,13 +18,16 @@ import {
   SendButton,
 } from './chatsFormStyle';
 import ChatService from './chatService';
+import ChatCreation from './chatRESTService';
 
 let service = new ChatService();
+let createNewChat = new ChatCreation();
 
 const ChatsForm = () => {
   console.log('Chat test');
   useEffect(() => {
     console.log('useEffect');
+    // createNewChat.createChat(2);
     service.start();
   }, []);
 
