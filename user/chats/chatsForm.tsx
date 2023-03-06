@@ -90,7 +90,7 @@ const ChatsForm = () => {
     };
     setMessages([...messages, newMessage]);
     setInputMessage('');
-    service.emit(newMessage);
+    // service.emit(newMessage);
   };
 
   let onEnter = (event: any) => {

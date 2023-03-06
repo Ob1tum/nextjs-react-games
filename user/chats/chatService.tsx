@@ -16,6 +16,7 @@ export default class ChatService {
       console.log('Connected', this.socket.id);
     });
 
+    //method for getting the messages
     // this.socket.on('message', (data) => {
     //   console.log(data);
     // });
@@ -24,8 +25,8 @@ export default class ChatService {
     //   console.log('Disconnected', socket.id); // undefined
     // });
   };
-  emit = (message: any) => {
-    console.log('EMIT');
-    this.socket.emit('send', { message });
-  };
+  //method for sending the message
+  // emit = (message: any) => {
+  //   this.socket.emit('send', { message });
+  // };
 }
