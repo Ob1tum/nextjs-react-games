@@ -18,16 +18,12 @@ import {
   SendButton,
 } from './chatsFormStyle';
 import ChatService from './chatService';
-import ChatCreation from './chatRESTService';
 
 let service = new ChatService();
-let createNewChat = new ChatCreation();
 
 const ChatsForm = () => {
-  console.log('Chat test');
   useEffect(() => {
-    console.log('useEffect');
-    // createNewChat.createChat(2);
+    //connection to WebSocket
     service.start();
   }, []);
 
@@ -64,13 +60,6 @@ const ChatsForm = () => {
       id: '5',
       author: 'user',
       text: 'Lorem!!!!!!!!!!!',
-      readStatus: 'unread',
-      date: '11:01 AM',
-    },
-    {
-      id: '6',
-      author: 'user',
-      text: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.',
       readStatus: 'unread',
       date: '11:01 AM',
     },
