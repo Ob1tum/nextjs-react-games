@@ -1,3 +1,7 @@
+import React from 'react';
+
+import { Calendar } from '../calendar/src/components';
+import { AppCalendar } from '../calendar/src/AppCalendar'
 import { SectionType } from './types';
 
 // example arr of sections data.
@@ -38,5 +42,10 @@ export const sectionsArr: SectionType[] = [
     icon: 'img/home.svg',
     name: 'gogogo',
     body: <p>gogogogogogogogogo</p>,
+  },
+  {
+    icon: 'img/home.svg',
+    name: 'Calendar',
+    body: <AppCalendar />,
   },
 ];
